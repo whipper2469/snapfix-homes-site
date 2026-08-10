@@ -78,10 +78,12 @@ section{padding:clamp(64px,8vw,116px) 0}
 /* ===== Alternating feature rows ===== */
 .row{display:grid;grid-template-columns:1fr 1fr;gap:clamp(30px,5vw,76px);align-items:center;
      margin-top:clamp(40px,5vw,76px)}
-.row:nth-child(even) .row-media{order:-1}
-@media(max-width:860px){.row{grid-template-columns:1fr}.row:nth-child(even) .row-media{order:0}}
+.row.flip .row-media{order:-1}
+@media(max-width:860px){.row{grid-template-columns:1fr}.row.flip .row-media{order:0}}
 .row-media{border-radius:var(--r);overflow:hidden;background:var(--soft);box-shadow:var(--shadow)}
-.row-media img{width:100%;display:block}
+/* The GIFs are phone-screen recordings — nearly 1:2. Left unconstrained they
+   make each row ~2000px tall and the centred text reads as empty space. */
+.row-media img{width:100%;display:block;max-height:460px;object-fit:cover;object-position:top center}
 .row h3{font-size:clamp(1.5rem,2.4vw,2rem);font-weight:800;margin:12px 0 12px}
 .ticks{list-style:none;padding:0;margin:20px 0 0;display:grid;gap:11px}
 .ticks li{display:flex;gap:11px;align-items:flex-start;font-size:.98rem}
@@ -100,7 +102,7 @@ section{padding:clamp(64px,8vw,116px) 0}
 .cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:22px;margin-top:44px}
 .card{background:#fff;border:1px solid var(--line);border-radius:var(--r);overflow:hidden;transition:.22s}
 .card:hover{transform:translateY(-3px);box-shadow:var(--shadow)}
-.card img{width:100%;display:block;background:var(--soft)}
+.card img{width:100%;display:block;background:var(--soft);aspect-ratio:4/3;object-fit:cover;object-position:top center}
 .card .cb{padding:17px 19px 21px}
 .card b{color:var(--ink);display:block;margin-bottom:5px}
 .card p{font-size:.9rem}
@@ -141,7 +143,7 @@ footer .wrap{display:flex;flex-wrap:wrap;gap:20px;justify-content:space-between;
 footer a{color:#C6D4E2;text-decoration:none;margin-left:20px}
 footer a:hover{color:#fff}
 
-.note{position:fixed;left:14px;bottom:14px;z-index:80;background:var(--ink);color:#fff;
+.note{position:fixed;right:14px;bottom:14px;z-index:80;background:var(--ink);color:#fff;
       font-size:.78rem;padding:9px 15px;border-radius:999px;box-shadow:var(--shadow)}
 </style>
 </head>
@@ -217,7 +219,7 @@ footer a:hover{color:#fff}
       <div class="row-media"><img src="images/snapfix-demo.gif" alt="Diagnosing a dripping pipe"></div>
     </div>
 
-    <div class="row">
+    <div class="row flip">
       <div>
         <span class="eyebrow">Step 02</span>
         <h3>Get a real diagnosis</h3>
