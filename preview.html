@@ -61,7 +61,7 @@ section{padding:clamp(64px,8vw,116px) 0}
 .hero h1{margin:14px 0 20px}
 .hero .accent{color:var(--teal)}
 .cta-row{display:flex;flex-wrap:wrap;gap:12px;margin:30px 0 22px}
-.hero-photo{position:relative;border-radius:26px;overflow:hidden;box-shadow:var(--shadow);aspect-ratio:4/5}
+.hero-photo{position:relative;border-radius:26px;overflow:hidden;box-shadow:var(--shadow);aspect-ratio:4/3.4}
 .hero-photo img{width:100%;height:100%;object-fit:cover;display:block}
 .float{position:absolute;left:18px;bottom:18px;right:18px;background:rgba(255,255,255,.96);
        border-radius:16px;padding:15px 17px;box-shadow:0 10px 30px rgba(11,18,32,.14)}
@@ -143,8 +143,57 @@ footer .wrap{display:flex;flex-wrap:wrap;gap:20px;justify-content:space-between;
 footer a{color:#C6D4E2;text-decoration:none;margin-left:20px}
 footer a:hover{color:#fff}
 
-.note{position:fixed;right:14px;bottom:14px;z-index:80;background:var(--ink);color:#fff;
+.note{position:fixed;right:14px;bottom:86px;z-index:80;background:var(--ink);color:#fff;
       font-size:.78rem;padding:9px 15px;border-radius:999px;box-shadow:var(--shadow)}
+
+/* ===== Contractor / live-agent pair ===== */
+.duo{display:grid;grid-template-columns:1fr 1fr;gap:26px;margin-top:44px}
+@media(max-width:900px){.duo{grid-template-columns:1fr}}
+.big-card{background:#fff;border:1px solid var(--line);border-radius:var(--r);overflow:hidden;
+          display:flex;flex-direction:column;transition:.22s}
+.big-card:hover{box-shadow:var(--shadow);transform:translateY(-3px)}
+.big-media{aspect-ratio:16/9;overflow:hidden;background:var(--soft)}
+.big-media img{width:100%;height:100%;object-fit:cover;display:block}
+.big-body{padding:26px 26px 30px}
+.big-body h3{font-size:1.4rem;font-weight:800;margin:10px 0 12px}
+.agent-media{background:linear-gradient(135deg,#0B7E71,#0F9E8E);display:flex;align-items:center;padding:20px}
+.chat-demo{display:grid;gap:8px;width:100%}
+.bubble{font-size:.85rem;line-height:1.45;padding:9px 13px;border-radius:14px;max-width:86%}
+.bubble.them{background:rgba(255,255,255,.94);color:var(--ink);justify-self:end;border-bottom-right-radius:5px}
+.bubble.me{background:rgba(0,0,0,.24);color:#fff;justify-self:start;border-bottom-left-radius:5px}
+.bubble.sys{background:transparent;color:rgba(255,255,255,.85);font-size:.76rem;justify-self:center;
+            border:1px dashed rgba(255,255,255,.45);border-radius:999px;padding:5px 12px}
+
+/* ===== Chat widget ===== */
+.chat-fab{position:fixed;right:20px;bottom:20px;z-index:100;width:58px;height:58px;border-radius:50%;
+          border:0;cursor:pointer;background:var(--teal);color:#fff;box-shadow:0 10px 30px rgba(11,18,32,.25);
+          display:grid;place-items:center;transition:.2s}
+.chat-fab:hover{background:var(--teal-dk);transform:scale(1.05)}
+.chat-fab svg{width:26px;height:26px}
+.chat-panel{position:fixed;right:20px;bottom:88px;z-index:100;width:min(384px,calc(100vw - 40px));
+            height:min(548px,calc(100vh - 130px));background:#fff;border-radius:18px;overflow:hidden;
+            box-shadow:0 26px 70px rgba(11,18,32,.30);display:none;flex-direction:column}
+.chat-panel.open{display:flex}
+.chat-head{background:var(--ink);color:#fff;padding:15px 18px;display:flex;align-items:center;gap:10px}
+.chat-head b{font-size:.98rem}
+.chat-head span{font-size:.76rem;color:#9DB0C4;display:block}
+.chat-head button{margin-left:auto;background:transparent;border:0;color:#9DB0C4;font-size:1.35rem;cursor:pointer}
+.chat-log{flex:1;overflow-y:auto;padding:16px;display:flex;flex-direction:column;gap:10px;background:var(--soft)}
+.msg{font-size:.9rem;line-height:1.5;padding:10px 13px;border-radius:14px;max-width:84%;white-space:pre-wrap}
+.msg.bot{background:#fff;border:1px solid var(--line);color:var(--ink);align-self:flex-start;border-bottom-left-radius:5px}
+.msg.user{background:var(--teal);color:#fff;align-self:flex-end;border-bottom-right-radius:5px}
+.msg.note{align-self:center;background:transparent;border:1px dashed var(--line);color:var(--body);
+          font-size:.79rem;border-radius:999px;padding:6px 13px}
+.chat-in{display:flex;gap:8px;padding:12px;border-top:1px solid var(--line);background:#fff}
+.chat-in input{flex:1;padding:11px 14px;border:1px solid var(--line);border-radius:999px;font:inherit;font-size:.92rem}
+.chat-in input:focus{outline:none;border-color:var(--teal)}
+.chat-in button{background:var(--teal);color:#fff;border:0;border-radius:50%;width:40px;height:40px;cursor:pointer;flex:none}
+.chat-in button:disabled{opacity:.5;cursor:default}
+.esc{display:grid;gap:8px;padding:12px;border-top:1px solid var(--line);background:#FFFDF5}
+.esc input{padding:10px 13px;border:1px solid var(--line);border-radius:10px;font:inherit;font-size:.9rem}
+.esc button{padding:11px;border:0;border-radius:10px;background:var(--ink);color:#fff;font:inherit;font-weight:700;cursor:pointer}
+.esc p{font-size:.78rem;color:var(--body)}
+@media(prefers-reduced-motion:reduce){.chat-fab,.big-card{transition:none}}
 </style>
 </head>
 <body>
@@ -183,11 +232,11 @@ footer a:hover{color:#fff}
       <p style="font-size:.9rem">Free to start · iPhone · No card required</p>
     </div>
     <div class="hero-photo">
-      <img src="images/photo-tiling.jpg" alt="Someone fitting tiles to a wall at home">
+      <img src="images/photo-plumbing.jpg" alt="Someone repairing the pipework under a kitchen sink">
       <div class="float">
         <div class="k">Detected issue</div>
-        <div class="v">Loose tile · adhesive failure</div>
-        <div class="m">Confidence 94% · about $40–90 · 1–2 hrs</div>
+        <div class="v">Leaking P-trap · worn washer</div>
+        <div class="m">Confidence 94% · about $12–40 · 30–45 min</div>
       </div>
     </div>
   </div>
@@ -240,7 +289,59 @@ footer a:hover{color:#fff}
         <p>Step-by-step instructions written for your skill level, with the tools and materials
           listed before you start — so you buy once.</p>
       </div>
-      <div class="row-media"><img src="images/photo-drill.jpg" alt="Using a cordless drill on a home repair"></div>
+      <div class="row-media"><img src="images/photo-painting.jpg" alt="Two people repainting a room together"></div>
+    </div>
+  </div>
+</section>
+
+<!-- BEYOND DIAGNOSIS -->
+<section id="more">
+  <div class="wrap">
+    <span class="eyebrow">When DIY isn't the answer</span>
+    <h2>You're not on your own</h2>
+    <p class="lede" style="margin-top:16px">Some jobs shouldn't be a DIY project, and some questions
+      need a person. SnapFix handles both.</p>
+
+    <div class="duo">
+      <div class="big-card">
+        <div class="big-media"><img src="images/photo-hvac.jpg" alt="An outdoor HVAC condenser unit beside a house"></div>
+        <div class="big-body">
+          <span class="chip">Find a pro</span>
+          <h3>Find a local contractor</h3>
+          <p>When a repair is beyond DIY — or code says it has to be — SnapFix hands the diagnosis
+            to a nearby contractor, so you're not re-explaining the problem from scratch. They see
+            what it is, what's needed, and what it should cost.</p>
+          <ul class="ticks">
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M20 6 9 17l-5-5"/></svg>Matched by trade and postal code</li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M20 6 9 17l-5-5"/></svg>Your diagnosis travels with the request</li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M20 6 9 17l-5-5"/></svg>Told plainly when a pro is required</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="big-card">
+        <div class="big-media agent-media">
+          <div class="chat-demo" aria-hidden="true">
+            <div class="bubble them">Can someone actually look at this with me?</div>
+            <div class="bubble me">Type <b>live agent</b> and I'll bring a person in.</div>
+            <div class="bubble them">live agent</div>
+            <div class="bubble sys">A SnapFix team member has been notified</div>
+          </div>
+        </div>
+        <div class="big-body">
+          <span class="chip">Talk to a human</span>
+          <h3>Chat with a live agent</h3>
+          <p>The assistant on this page answers questions about SnapFix — what it covers, what it
+            costs, how to get started. Ask for a live agent and a real person is notified on their
+            phone straight away.</p>
+          <ul class="ticks">
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M20 6 9 17l-5-5"/></svg>Instant answers, day or night</li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M20 6 9 17l-5-5"/></svg>Say "live agent" for a human</li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M20 6 9 17l-5-5"/></svg>We reply by email, usually same day</li>
+          </ul>
+          <p style="margin-top:20px"><a class="btn btn-p" href="#" onclick="openChat();return false">Try the assistant</a></p>
+        </div>
+      </div>
     </div>
   </div>
 </section>
@@ -347,6 +448,162 @@ footer a:hover{color:#fff}
     <div><a href="support.html">Support</a><a href="privacy.html">Privacy</a><a href="terms.html">Terms</a></div>
   </div>
 </footer>
+
+<!-- ============ CHAT WIDGET ============ -->
+<button class="chat-fab" id="chatFab" aria-label="Open chat" onclick="openChat()">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 11.5a8.4 8.4 0 0 1-9 8.4 9 9 0 0 1-3.9-.9L3 20l1.3-3.8A8.4 8.4 0 0 1 3 11.5a8.5 8.5 0 0 1 9-8.4 8.4 8.4 0 0 1 9 8.4z"/></svg>
+</button>
+
+<div class="chat-panel" id="chatPanel" role="dialog" aria-modal="false" aria-label="SnapFix chat">
+  <div class="chat-head">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" width="22" height="22"><path d="M3 11 12 3l9 8"/><path d="M5 10v10h14V10"/></svg>
+    <div><b>SnapFix assistant</b><span>Ask anything — or type "live agent"</span></div>
+    <button type="button" aria-label="Close chat" onclick="closeChat()">&times;</button>
+  </div>
+  <div class="chat-log" id="chatLog"></div>
+
+  <form class="chat-in" id="chatForm" onsubmit="return sendChat(event)">
+    <input id="chatText" placeholder="Ask about SnapFix…" autocomplete="off" aria-label="Message">
+    <button type="submit" id="chatSend" aria-label="Send">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18" style="margin:auto"><path d="M22 2 11 13"/><path d="M22 2 15 22l-4-9-9-4z"/></svg>
+    </button>
+  </form>
+
+  <form class="esc" id="escForm" style="display:none" onsubmit="return sendEscalation(event)">
+    <p><b>Bringing in a person.</b> Leave your details and they'll be notified right away.</p>
+    <input name="name" placeholder="Your name" required autocomplete="name">
+    <input name="email" type="email" placeholder="you@example.com" required autocomplete="email">
+    <input name="note" placeholder="What's it about? (optional)">
+    <button type="submit">Notify a live agent</button>
+    <p id="escErr" style="color:#B42318"></p>
+  </form>
+</div>
+
+<script>
+/* ==========================================================================
+   Site chat. General questions go to the `site-chat` edge function. Asking for
+   a human writes a row to support_contacts, which fires the existing AFTER
+   INSERT trigger -> send-admin-push -> APNs, and also calls notify-support for
+   the email + SMS. Escalation is driven by the page, never by the model, so a
+   prompt-injected "escalate" cannot page anyone.
+   ========================================================================== */
+(function () {
+  var URL_BASE = 'https://japlrtlpopefvgkecpif.supabase.co';
+  var ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImphcGxydGxwb3BlZnZna2VjcGlmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzE3Njc1NTcsImV4cCI6MjA4NzM0MzU1N30.q0JVwQJdJcpNUcyt2opxE-yRlhBnWdO3oq4IUMk6L5M';
+  var H = { 'Content-Type': 'application/json', 'apikey': ANON, 'Authorization': 'Bearer ' + ANON };
+
+  var log = document.getElementById('chatLog');
+  var panel = document.getElementById('chatPanel');
+  var history = [];
+  var greeted = false;
+
+  function add(text, cls) {
+    var d = document.createElement('div');
+    d.className = 'msg ' + cls;
+    d.textContent = text;
+    log.appendChild(d);
+    log.scrollTop = log.scrollHeight;
+    return d;
+  }
+
+  window.openChat = function () {
+    panel.classList.add('open');
+    if (!greeted) {
+      greeted = true;
+      add('Hi — I can answer questions about SnapFix: what it covers, what it costs, how to get started. If you’d rather speak to a person, just type "live agent".', 'bot');
+    }
+    document.getElementById('chatText').focus();
+  };
+  window.closeChat = function () { panel.classList.remove('open'); };
+
+  // Escalation is a page-side decision on the visitor's own words.
+  var WANTS_HUMAN = /\b(live agent|real person|speak to (a )?(human|person|someone)|talk to (a )?(human|person|someone)|human (please|agent)|customer (service|support) rep)\b/i;
+
+  function showEscalation() {
+    document.getElementById('chatForm').style.display = 'none';
+    document.getElementById('escForm').style.display = 'grid';
+    document.getElementById('escForm').querySelector('input').focus();
+  }
+
+  window.sendChat = async function (ev) {
+    ev.preventDefault();
+    var input = document.getElementById('chatText');
+    var btn = document.getElementById('chatSend');
+    var text = input.value.trim();
+    if (!text) return false;
+
+    add(text, 'user');
+    input.value = '';
+
+    if (WANTS_HUMAN.test(text)) {
+      add('Of course — let me put you through to someone.', 'bot');
+      showEscalation();
+      return false;
+    }
+
+    btn.disabled = true;
+    var thinking = add('…', 'bot');
+    try {
+      var res = await fetch(URL_BASE + '/functions/v1/site-chat', {
+        method: 'POST', headers: H,
+        body: JSON.stringify({ message: text, history: history })
+      });
+      var data = await res.json();
+      var reply = data.reply || 'Sorry — try that again?';
+      thinking.textContent = reply;
+      history.push({ role: 'user', content: text });
+      history.push({ role: 'assistant', content: reply });
+      if (history.length > 8) history = history.slice(-8);
+    } catch (e) {
+      thinking.textContent = 'I couldn’t reach the assistant. Type "live agent" and a person will pick this up.';
+    }
+    btn.disabled = false;
+    input.focus();
+    return false;
+  };
+
+  window.sendEscalation = async function (ev) {
+    ev.preventDefault();
+    var f = ev.target;
+    var err = document.getElementById('escErr');
+    var name = f.name.value.trim(), email = f.email.value.trim(), note = f.note.value.trim();
+    err.textContent = '';
+    if (!name || !email) { err.textContent = 'Name and email, please.'; return false; }
+
+    var btn = f.querySelector('button');
+    btn.disabled = true; btn.textContent = 'Notifying…';
+
+    var transcript = history.map(function (m) { return (m.role === 'user' ? 'Visitor: ' : 'Bot: ') + m.content; }).join('\n');
+    var message = (note || 'Asked for a live agent on the website.') + '\n\n--- chat so far ---\n' + (transcript || '(no prior messages)');
+
+    try {
+      // Writing this row is what pages the phone: the AFTER INSERT trigger
+      // calls send-admin-push, which we verified end to end.
+      var res = await fetch(URL_BASE + '/rest/v1/support_contacts', {
+        method: 'POST',
+        headers: Object.assign({}, H, { 'Prefer': 'return=minimal' }),
+        body: JSON.stringify({ name: name, email: email, phone: '', message: message, source: 'website-chat', status: 'new' })
+      });
+      if (!res.ok) throw new Error('HTTP ' + res.status);
+
+      // Email + SMS. Best effort — the push above has already gone out, so a
+      // failure here must not tell the visitor nobody was reached.
+      fetch(URL_BASE + '/functions/v1/notify-support', {
+        method: 'POST', headers: H,
+        body: JSON.stringify({ name: name, email: email, phone: '', message: message })
+      }).catch(function () {});
+
+      f.style.display = 'none';
+      add('A SnapFix team member has been notified and will email you at ' + email + '. Usually same day.', 'note');
+      document.getElementById('chatForm').style.display = 'flex';
+    } catch (e) {
+      btn.disabled = false; btn.textContent = 'Notify a live agent';
+      err.textContent = 'Couldn’t reach us just then — please try again.';
+    }
+    return false;
+  };
+})();
+</script>
 
 </body>
 </html>
