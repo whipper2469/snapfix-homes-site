@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SnapFix.Homes — preview</title>
+<meta name="robots" content="noindex">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%230F9E8E'><path d='M12 2 2 10h2v10h7v-6h2v6h7V10h2L12 2z'/></svg>">
+<style>
+/* ===== Tokens =====================================================
+   Airier than the current site: bigger type, more whitespace, a teal
+   accent alongside the SnapFix blue, and photography carrying the hero. */
+:root{
+  --ink:#0B1220; --body:#4A5568; --line:#E4E8EF;
+  --teal:#0F9E8E; --teal-dk:#0B7E71; --blue:#1A6BEA;
+  --bg:#fff; --soft:#F5F8F7; --sand:#FBF8F4;
+  --r:20px; --shadow:0 18px 48px rgba(11,18,32,.10);
+  --maxw:1180px;
+}
+*{box-sizing:border-box}
+body{margin:0;font-family:Inter,system-ui,sans-serif;color:var(--body);background:var(--bg);
+     -webkit-font-smoothing:antialiased;line-height:1.65}
+.wrap{max-width:var(--maxw);margin:0 auto;padding:0 24px}
+h1,h2,h3{color:var(--ink);letter-spacing:-.03em;line-height:1.08;margin:0}
+h1{font-size:clamp(2.6rem,5.6vw,4.4rem);font-weight:900}
+h2{font-size:clamp(2rem,3.6vw,3rem);font-weight:800}
+h3{font-size:1.15rem;font-weight:700;letter-spacing:-.01em}
+p{margin:0}
+a{color:inherit}
+.eyebrow{font-size:.76rem;font-weight:800;letter-spacing:.14em;color:var(--teal);text-transform:uppercase}
+.lede{font-size:1.16rem;color:var(--body);max-width:34em}
+section{padding:clamp(64px,8vw,116px) 0}
+
+/* ===== Buttons ===== */
+.btn{display:inline-flex;align-items:center;gap:9px;padding:15px 26px;border-radius:999px;
+     font-weight:700;font-size:1rem;text-decoration:none;border:0;cursor:pointer;transition:.2s}
+.btn-p{background:var(--teal);color:#fff}
+.btn-p:hover{background:var(--teal-dk);transform:translateY(-1px)}
+.btn-s{background:#fff;color:var(--ink);border:1.5px solid var(--line)}
+.btn-s:hover{border-color:var(--ink)}
+
+/* ===== Nav ===== */
+.nav{position:sticky;top:0;z-index:50;background:rgba(255,255,255,.9);backdrop-filter:blur(12px);
+     border-bottom:1px solid var(--line)}
+.nav .wrap{display:flex;align-items:center;gap:28px;height:74px}
+.brand{display:flex;align-items:center;gap:9px;font-weight:800;color:var(--ink);
+       text-decoration:none;font-size:1.1rem;letter-spacing:-.02em}
+.brand svg{width:26px;height:26px;color:var(--teal)}
+.nav nav{display:flex;gap:26px;margin-left:auto}
+.nav nav a{text-decoration:none;font-size:.95rem;font-weight:600;color:var(--body)}
+.nav nav a:hover{color:var(--ink)}
+@media(max-width:860px){.nav nav{display:none}}
+
+/* ===== Hero ===== */
+.hero{padding:clamp(48px,6vw,86px) 0 clamp(56px,7vw,100px);background:
+      radial-gradient(1100px 520px at 82% -8%,#E6F5F2 0%,transparent 62%),var(--bg)}
+.hero-grid{display:grid;grid-template-columns:1.05fr .95fr;gap:clamp(32px,5vw,72px);align-items:center}
+@media(max-width:920px){.hero-grid{grid-template-columns:1fr}}
+.hero h1{margin:14px 0 20px}
+.hero .accent{color:var(--teal)}
+.cta-row{display:flex;flex-wrap:wrap;gap:12px;margin:30px 0 22px}
+.hero-photo{position:relative;border-radius:26px;overflow:hidden;box-shadow:var(--shadow);aspect-ratio:4/5}
+.hero-photo img{width:100%;height:100%;object-fit:cover;display:block}
+.float{position:absolute;left:18px;bottom:18px;right:18px;background:rgba(255,255,255,.96);
+       border-radius:16px;padding:15px 17px;box-shadow:0 10px 30px rgba(11,18,32,.14)}
+.float .k{font-size:.68rem;font-weight:800;letter-spacing:.1em;color:var(--teal);text-transform:uppercase}
+.float .v{font-weight:800;color:var(--ink);font-size:1.02rem;margin-top:3px}
+.float .m{font-size:.83rem;margin-top:3px}
+
+/* ===== Stat band ===== */
+.band{background:var(--ink);color:#fff;padding:52px 0}
+.band .wrap{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:26px;text-align:center}
+.band b{display:block;font-size:1.75rem;font-weight:900;letter-spacing:-.03em;color:#fff}
+.band span{display:block;font-size:.9rem;color:#9DB0C4;margin-top:5px}
+
+/* ===== Alternating feature rows ===== */
+.row{display:grid;grid-template-columns:1fr 1fr;gap:clamp(30px,5vw,76px);align-items:center;
+     margin-top:clamp(40px,5vw,76px)}
+.row:nth-child(even) .row-media{order:-1}
+@media(max-width:860px){.row{grid-template-columns:1fr}.row:nth-child(even) .row-media{order:0}}
+.row-media{border-radius:var(--r);overflow:hidden;background:var(--soft);box-shadow:var(--shadow)}
+.row-media img{width:100%;display:block}
+.row h3{font-size:clamp(1.5rem,2.4vw,2rem);font-weight:800;margin:12px 0 12px}
+.ticks{list-style:none;padding:0;margin:20px 0 0;display:grid;gap:11px}
+.ticks li{display:flex;gap:11px;align-items:flex-start;font-size:.98rem}
+.ticks svg{width:21px;height:21px;flex:none;color:var(--teal);margin-top:2px}
+
+/* ===== Coverage ===== */
+.soft{background:var(--sand)}
+.grid-4{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:18px;margin-top:44px}
+.tile{background:#fff;border:1px solid var(--line);border-radius:var(--r);padding:26px 22px;transition:.22s}
+.tile:hover{transform:translateY(-3px);box-shadow:var(--shadow)}
+.tile svg{width:28px;height:28px;color:var(--teal)}
+.tile b{display:block;color:var(--ink);font-size:1.02rem;margin:13px 0 6px}
+.tile p{font-size:.92rem}
+
+/* ===== Examples ===== */
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:22px;margin-top:44px}
+.card{background:#fff;border:1px solid var(--line);border-radius:var(--r);overflow:hidden;transition:.22s}
+.card:hover{transform:translateY(-3px);box-shadow:var(--shadow)}
+.card img{width:100%;display:block;background:var(--soft)}
+.card .cb{padding:17px 19px 21px}
+.card b{color:var(--ink);display:block;margin-bottom:5px}
+.card p{font-size:.9rem}
+.chip{display:inline-block;background:rgba(15,158,142,.12);color:var(--teal-dk);font-size:.72rem;
+      font-weight:800;letter-spacing:.05em;padding:5px 11px;border-radius:999px;margin-bottom:11px}
+
+/* ===== Pricing ===== */
+.plans{display:grid;grid-template-columns:repeat(auto-fit,minmax(290px,1fr));gap:24px;margin-top:46px;
+       max-width:800px;margin-inline:auto}
+.plan{background:#fff;border:1.5px solid var(--line);border-radius:var(--r);padding:34px 30px;position:relative}
+.plan.hot{border-color:var(--teal);box-shadow:var(--shadow)}
+.tagpop{position:absolute;top:-13px;left:30px;background:var(--teal);color:#fff;font-size:.7rem;
+        font-weight:800;letter-spacing:.08em;padding:6px 13px;border-radius:999px}
+.price{font-size:2.7rem;font-weight:900;color:var(--ink);letter-spacing:-.03em;margin:14px 0 4px}
+.price span{font-size:.95rem;font-weight:600;color:var(--body)}
+
+/* ===== FAQ ===== */
+details{border-bottom:1px solid var(--line);padding:20px 0}
+summary{cursor:pointer;font-weight:700;color:var(--ink);font-size:1.04rem;list-style:none;
+        display:flex;justify-content:space-between;gap:16px}
+summary::-webkit-details-marker{display:none}
+summary::after{content:'+';color:var(--teal);font-weight:800;font-size:1.4rem;line-height:1}
+details[open] summary::after{content:'−'}
+details p{margin-top:12px;font-size:.98rem;max-width:64ch}
+
+/* ===== CTA ===== */
+.cta{background:linear-gradient(135deg,#0B7E71,#0F9E8E);color:#fff;text-align:center}
+.cta h2{color:#fff}
+.cta p{color:rgba(255,255,255,.9);max-width:44ch;margin:14px auto 0}
+.form{display:flex;gap:10px;max-width:470px;margin:30px auto 0}
+.form input{flex:1;padding:15px 18px;border:0;border-radius:999px;font:inherit;font-size:1rem}
+.form button{background:var(--ink);color:#fff}
+@media(max-width:520px){.form{flex-direction:column}}
+.fine{font-size:.82rem;color:rgba(255,255,255,.75);margin-top:14px}
+
+footer{background:var(--ink);color:#8FA3B8;padding:56px 0;font-size:.9rem}
+footer .wrap{display:flex;flex-wrap:wrap;gap:20px;justify-content:space-between;align-items:center}
+footer a{color:#C6D4E2;text-decoration:none;margin-left:20px}
+footer a:hover{color:#fff}
+
+.note{position:fixed;left:14px;bottom:14px;z-index:80;background:var(--ink);color:#fff;
+      font-size:.78rem;padding:9px 15px;border-radius:999px;box-shadow:var(--shadow)}
+</style>
+</head>
+<body>
+
+<div class="note">PREVIEW — not live</div>
+
+<header class="nav">
+  <div class="wrap">
+    <a class="brand" href="#">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><path d="M3 11 12 3l9 8"/><path d="M5 10v10h14V10"/><circle cx="12" cy="14" r="2.5"/></svg>
+      SnapFix<span style="color:var(--teal)">.Homes</span>
+    </a>
+    <nav>
+      <a href="#how">How it works</a>
+      <a href="#what">What it fixes</a>
+      <a href="#examples">Examples</a>
+      <a href="#pricing">Pricing</a>
+      <a href="#faq">FAQ</a>
+    </nav>
+    <a class="btn btn-p" href="#join" style="padding:12px 22px;font-size:.94rem">Get early access</a>
+  </div>
+</header>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="wrap hero-grid">
+    <div>
+      <span class="eyebrow">Home repair, diagnosed by AI</span>
+      <h1>Fix it right.<br>Start with a <span class="accent">snap.</span></h1>
+      <p class="lede">Photograph the problem. SnapFix tells you what's wrong, how serious it is,
+        what it should cost, and the exact steps to put it right.</p>
+      <div class="cta-row">
+        <a class="btn btn-p" href="#join">Get early access</a>
+        <a class="btn btn-s" href="#how">See how it works</a>
+      </div>
+      <p style="font-size:.9rem">Free to start · iPhone · No card required</p>
+    </div>
+    <div class="hero-photo">
+      <img src="images/photo-tiling.jpg" alt="Someone fitting tiles to a wall at home">
+      <div class="float">
+        <div class="k">Detected issue</div>
+        <div class="v">Loose tile · adhesive failure</div>
+        <div class="m">Confidence 94% · about $40–90 · 1–2 hrs</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- STAT BAND -->
+<div class="band">
+  <div class="wrap">
+    <div><b>Seconds</b><span>From photo to diagnosis</span></div>
+    <div><b>Every room</b><span>Plumbing to HVAC</span></div>
+    <div><b>Free to start</b><span>No card required</span></div>
+    <div><b>Confidence score</b><span>On every result</span></div>
+  </div>
+</div>
+
+<!-- HOW IT WORKS -->
+<section id="how">
+  <div class="wrap">
+    <span class="eyebrow">How it works</span>
+    <h2>Three steps, no guesswork</h2>
+
+    <div class="row">
+      <div>
+        <span class="eyebrow">Step 01</span>
+        <h3>Snap the problem</h3>
+        <p>Point your phone at the leak, crack, or dead outlet. Add up to three angles when the
+          problem is hard to see in one shot.</p>
+      </div>
+      <div class="row-media"><img src="images/snapfix-demo.gif" alt="Diagnosing a dripping pipe"></div>
+    </div>
+
+    <div class="row">
+      <div>
+        <span class="eyebrow">Step 02</span>
+        <h3>Get a real diagnosis</h3>
+        <p>Not a search result — a specific answer: what's failed, why, how urgent it is, and a
+          confidence score so you know how much to trust it.</p>
+        <ul class="ticks">
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M20 6 9 17l-5-5"/></svg>Cost range before you commit</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M20 6 9 17l-5-5"/></svg>Says plainly when to call a pro</li>
+        </ul>
+      </div>
+      <div class="row-media"><img src="images/snapfix-outlet.gif" alt="Diagnosing an outlet that stopped working"></div>
+    </div>
+
+    <div class="row">
+      <div>
+        <span class="eyebrow">Step 03</span>
+        <h3>Follow the steps</h3>
+        <p>Step-by-step instructions written for your skill level, with the tools and materials
+          listed before you start — so you buy once.</p>
+      </div>
+      <div class="row-media"><img src="images/photo-drill.jpg" alt="Using a cordless drill on a home repair"></div>
+    </div>
+  </div>
+</section>
+
+<!-- COVERAGE -->
+<section class="soft" id="what">
+  <div class="wrap">
+    <span class="eyebrow">What it fixes</span>
+    <h2>If you can photograph it, start there</h2>
+    <div class="grid-4">
+      <div class="tile"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M6 3v7a6 6 0 0 0 12 0V3"/><path d="M12 16v5"/></svg><b>Plumbing</b><p>Drips, leaks, running toilets, slow drains.</p></div>
+      <div class="tile"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M13 2 4 14h7l-1 8 9-12h-7z"/></svg><b>Electrical</b><p>Dead outlets, switches, tripping breakers.</p></div>
+      <div class="tile"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 10h18"/></svg><b>Walls &amp; ceilings</b><p>Holes, cracks, water stains, patching.</p></div>
+      <div class="tile"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 8h16M4 12h16M4 16h16"/></svg><b>HVAC</b><p>Weak airflow, filters, vents, odd noises.</p></div>
+      <div class="tile"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="4" y="3" width="16" height="18" rx="2"/><path d="M8 7h8M8 12h8"/></svg><b>Appliances</b><p>Error codes and what they actually mean.</p></div>
+      <div class="tile"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 3v6M9 9h6l-1 12h-4z"/></svg><b>Fixtures</b><p>Wobbling taps, handles, hinges, mounts.</p></div>
+      <div class="tile"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M19 3 8 14l-3-3"/><path d="M5 21h14"/></svg><b>Paint &amp; surfaces</b><p>Peeling, damp, damage, prep and finish.</p></div>
+      <div class="tile"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="4"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3"/></svg><b>Pests</b><p>Identify what you're looking at, fast.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- EXAMPLES -->
+<section id="examples">
+  <div class="wrap">
+    <span class="eyebrow">Examples</span>
+    <h2>See it work</h2>
+    <div class="cards">
+      <div class="card"><img src="images/snapfix-demo.gif" alt="Dripping pipe"><div class="cb"><span class="chip">Plumbing</span><b>Dripping pipe</b><p>Find the cause and stop the leak.</p></div></div>
+      <div class="card"><img src="images/snapfix-outlet.gif" alt="Outlet not working"><div class="cb"><span class="chip">Electrical</span><b>Dead outlet</b><p>Diagnose it and fix it safely.</p></div></div>
+      <div class="card"><img src="images/snapfix-hole-in-wall.gif" alt="Hole in drywall"><div class="cb"><span class="chip">Drywall</span><b>Hole in the wall</b><p>Patch it so it disappears.</p></div></div>
+      <div class="card"><img src="images/snapfix-loose-faucet.gif" alt="Loose faucet"><div class="cb"><span class="chip">Fixtures</span><b>Loose faucet</b><p>Tighten it, stop the wobble.</p></div></div>
+      <div class="card"><img src="images/snapfix-weak-airflow.gif" alt="Weak airflow"><div class="cb"><span class="chip">HVAC</span><b>Weak airflow</b><p>Get the system breathing again.</p></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- PRICING -->
+<section class="soft" id="pricing">
+  <div class="wrap" style="text-align:center">
+    <span class="eyebrow">Pricing</span>
+    <h2>Simple, honest pricing</h2>
+    <div class="plans" style="text-align:left">
+      <div class="plan">
+        <h3>Free</h3>
+        <div class="price">$0<span>/month</span></div>
+        <p style="font-size:.93rem">Try it on your next repair.</p>
+        <ul class="ticks">
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M20 6 9 17l-5-5"/></svg>AI photo diagnosis</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M20 6 9 17l-5-5"/></svg>Step-by-step guides</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M20 6 9 17l-5-5"/></svg>Limited diagnoses monthly</li>
+        </ul>
+      </div>
+      <div class="plan hot">
+        <span class="tagpop">MOST POPULAR</span>
+        <h3>SnapFix Pro</h3>
+        <div class="price">$6.99<span>/month</span></div>
+        <p style="font-size:.93rem">Unlimited help for the whole house.</p>
+        <ul class="ticks">
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M20 6 9 17l-5-5"/></svg>Unlimited diagnoses</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M20 6 9 17l-5-5"/></svg>Up to 3 photo angles</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M20 6 9 17l-5-5"/></svg>Follow-up AI chat</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M20 6 9 17l-5-5"/></svg>Shopping lists with costs</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M20 6 9 17l-5-5"/></svg>Before &amp; after verification</li>
+        </ul>
+      </div>
+    </div>
+    <p style="font-size:.85rem;margin-top:26px">Billed through the App Store. Cancel any time in your Apple ID settings.</p>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section id="faq">
+  <div class="wrap" style="max-width:820px">
+    <span class="eyebrow">FAQ</span>
+    <h2>Questions, answered</h2>
+    <div style="margin-top:34px">
+      <details open><summary>What can SnapFix diagnose?</summary><p>Plumbing leaks and clogs, wall and ceiling damage, appliance error codes, outlets and switches, pests, paint and surface damage, fixtures, and more. If you can photograph it, start there.</p></details>
+      <details><summary>How accurate is it?</summary><p>Every diagnosis carries a confidence score, so you always know how certain the answer is. Add up to three angles for a better read, and use follow-up chat to ask about your specific situation.</p></details>
+      <details><summary>Does this replace a professional?</summary><p>No — and it will tell you so. For anything complex, dangerous or code-regulated, like major electrical or gas work, it points you to a licensed pro rather than talking you through it.</p></details>
+      <details><summary>What happens to my photos?</summary><p>They generate your diagnosis and are stored with your account so you can revisit past repairs. They are never sold. See the <a href="privacy.html" style="color:var(--teal);font-weight:600">Privacy Policy</a>.</p></details>
+      <details><summary>Which devices are supported?</summary><p>iPhone on iOS 17 or later. An Android version is in the works.</p></details>
+      <details><summary>How do I cancel?</summary><p>Settings → your name → Subscriptions → SnapFix → Cancel. Pro access runs to the end of the billing period.</p></details>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta" id="join">
+  <div class="wrap">
+    <h2>Be first to know</h2>
+    <p>Leave your email and we'll send the download link the day SnapFix lands on the App Store.</p>
+    <form class="form" onsubmit="event.preventDefault();this.innerHTML='<p style=\'color:#fff;font-weight:700;margin:auto\'>You&rsquo;re on the list.</p>'">
+      <input type="email" placeholder="you@example.com" aria-label="Email address" required>
+      <button class="btn btn-p" type="submit" style="background:#0B1220">Notify me</button>
+    </form>
+    <p class="fine">One email at launch. Nothing else.</p>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div>© 2026 SnapFix.Homes — a <a href="https://claybirdlabs.com/" style="margin:0">Claybird Labs</a> project</div>
+    <div><a href="support.html">Support</a><a href="privacy.html">Privacy</a><a href="terms.html">Terms</a></div>
+  </div>
+</footer>
+
+</body>
+</html>
