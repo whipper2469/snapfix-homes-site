@@ -4,650 +4,601 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>SnapFix.Homes — Fix it right. Start with a snap.</title>
-<meta name="description" content="SnapFix.Homes uses AI to identify home repair issues, explain what's wrong, and show you how to fix it — step by step. Snap a photo, get a diagnosis.">
+<meta name="description" content="Photograph a home repair problem and SnapFix tells you what is wrong, how serious it is, what it should cost, and the steps to fix it.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Caveat:wght@600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="styles.css">
-<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%231A6BEA'><path d='M12 2 2 10h2v10h7v-6h2v6h7V10h2L12 2z'/></svg>">
-<script>document.documentElement.classList.add('js');</script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%230F9E8E'><path d='M12 2 2 10h2v10h7v-6h2v6h7V10h2L12 2z'/></svg>">
+<style>
+/* ===== Tokens =====================================================
+   Airier than the current site: bigger type, more whitespace, a teal
+   accent alongside the SnapFix blue, and photography carrying the hero. */
+:root{
+  --ink:#0B1220; --body:#4A5568; --line:#E4E8EF;
+  --teal:#0F9E8E; --teal-dk:#0B7E71; --blue:#1A6BEA;
+  --bg:#fff; --soft:#F5F8F7; --sand:#FBF8F4;
+  --r:20px; --shadow:0 18px 48px rgba(11,18,32,.10);
+  --maxw:1180px;
+}
+*{box-sizing:border-box}
+body{margin:0;font-family:Inter,system-ui,sans-serif;color:var(--body);background:var(--bg);
+     -webkit-font-smoothing:antialiased;line-height:1.65}
+.wrap{max-width:var(--maxw);margin:0 auto;padding:0 24px}
+h1,h2,h3{color:var(--ink);letter-spacing:-.03em;line-height:1.08;margin:0}
+h1{font-size:clamp(2.6rem,5.6vw,4.4rem);font-weight:900}
+h2{font-size:clamp(2rem,3.6vw,3rem);font-weight:800}
+h3{font-size:1.15rem;font-weight:700;letter-spacing:-.01em}
+p{margin:0}
+a{color:inherit}
+.eyebrow{font-size:.76rem;font-weight:800;letter-spacing:.14em;color:var(--teal);text-transform:uppercase}
+.lede{font-size:1.16rem;color:var(--body);max-width:34em}
+section{padding:clamp(64px,8vw,116px) 0}
+
+/* ===== Buttons ===== */
+.btn{display:inline-flex;align-items:center;gap:9px;padding:15px 26px;border-radius:999px;
+     font-weight:700;font-size:1rem;text-decoration:none;border:0;cursor:pointer;transition:.2s}
+.btn-p{background:var(--teal);color:#fff}
+.btn-p:hover{background:var(--teal-dk);transform:translateY(-1px)}
+.btn-s{background:#fff;color:var(--ink);border:1.5px solid var(--line)}
+.btn-s:hover{border-color:var(--ink)}
+
+/* ===== Nav ===== */
+.nav{position:sticky;top:0;z-index:50;background:rgba(255,255,255,.9);backdrop-filter:blur(12px);
+     border-bottom:1px solid var(--line)}
+.nav .wrap{display:flex;align-items:center;gap:28px;height:74px}
+.brand{display:flex;align-items:center;gap:9px;font-weight:800;color:var(--ink);
+       text-decoration:none;font-size:1.1rem;letter-spacing:-.02em}
+.brand svg{width:26px;height:26px;color:var(--teal)}
+.nav nav{display:flex;gap:26px;margin-left:auto}
+.nav nav a{text-decoration:none;font-size:.95rem;font-weight:600;color:var(--body)}
+.nav nav a:hover{color:var(--ink)}
+@media(max-width:860px){.nav nav{display:none}}
+
+/* ===== Hero ===== */
+.hero{padding:clamp(48px,6vw,86px) 0 clamp(56px,7vw,100px);background:
+      radial-gradient(1100px 520px at 82% -8%,#E6F5F2 0%,transparent 62%),var(--bg)}
+.hero-grid{display:grid;grid-template-columns:1.05fr .95fr;gap:clamp(32px,5vw,72px);align-items:center}
+@media(max-width:920px){.hero-grid{grid-template-columns:1fr}}
+.hero h1{margin:14px 0 20px}
+.hero .accent{color:var(--teal)}
+.cta-row{display:flex;flex-wrap:wrap;gap:12px;margin:30px 0 22px}
+.hero-photo{position:relative;border-radius:26px;overflow:hidden;box-shadow:var(--shadow);aspect-ratio:4/3.4}
+.hero-photo img{width:100%;height:100%;object-fit:cover;display:block}
+.float{position:absolute;left:18px;bottom:18px;right:18px;background:rgba(255,255,255,.96);
+       border-radius:16px;padding:15px 17px;box-shadow:0 10px 30px rgba(11,18,32,.14)}
+.float .k{font-size:.68rem;font-weight:800;letter-spacing:.1em;color:var(--teal);text-transform:uppercase}
+.float .v{font-weight:800;color:var(--ink);font-size:1.02rem;margin-top:3px}
+.float .m{font-size:.83rem;margin-top:3px}
+
+/* ===== Stat band ===== */
+.band{background:var(--ink);color:#fff;padding:52px 0}
+.band .wrap{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:26px;text-align:center}
+.band b{display:block;font-size:1.75rem;font-weight:900;letter-spacing:-.03em;color:#fff}
+.band span{display:block;font-size:.9rem;color:#9DB0C4;margin-top:5px}
+
+/* ===== Alternating feature rows ===== */
+.row{display:grid;grid-template-columns:1fr 1fr;gap:clamp(30px,5vw,76px);align-items:center;
+     margin-top:clamp(40px,5vw,76px)}
+.row.flip .row-media{order:-1}
+@media(max-width:860px){.row{grid-template-columns:1fr}.row.flip .row-media{order:0}}
+.row-media{border-radius:var(--r);overflow:hidden;background:var(--soft);box-shadow:var(--shadow)}
+/* The GIFs are phone-screen recordings — nearly 1:2. Left unconstrained they
+   make each row ~2000px tall and the centred text reads as empty space. */
+.row-media img{width:100%;display:block;max-height:460px;object-fit:cover;object-position:top center}
+.row h3{font-size:clamp(1.5rem,2.4vw,2rem);font-weight:800;margin:12px 0 12px}
+.ticks{list-style:none;padding:0;margin:20px 0 0;display:grid;gap:11px}
+.ticks li{display:flex;gap:11px;align-items:flex-start;font-size:.98rem}
+.ticks svg{width:21px;height:21px;flex:none;color:var(--teal);margin-top:2px}
+
+/* ===== Coverage ===== */
+.soft{background:var(--sand)}
+.grid-4{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:18px;margin-top:44px}
+.tile{background:#fff;border:1px solid var(--line);border-radius:var(--r);padding:26px 22px;transition:.22s}
+.tile:hover{transform:translateY(-3px);box-shadow:var(--shadow)}
+.tile svg{width:28px;height:28px;color:var(--teal)}
+.tile b{display:block;color:var(--ink);font-size:1.02rem;margin:13px 0 6px}
+.tile p{font-size:.92rem}
+
+/* ===== Examples ===== */
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:22px;margin-top:44px}
+.card{background:#fff;border:1px solid var(--line);border-radius:var(--r);overflow:hidden;transition:.22s}
+.card:hover{transform:translateY(-3px);box-shadow:var(--shadow)}
+.card img{width:100%;display:block;background:var(--soft);aspect-ratio:4/3;object-fit:cover;object-position:top center}
+.card .cb{padding:17px 19px 21px}
+.card b{color:var(--ink);display:block;margin-bottom:5px}
+.card p{font-size:.9rem}
+.chip{display:inline-block;background:rgba(15,158,142,.12);color:var(--teal-dk);font-size:.72rem;
+      font-weight:800;letter-spacing:.05em;padding:5px 11px;border-radius:999px;margin-bottom:11px}
+
+/* ===== Pricing ===== */
+.plans{display:grid;grid-template-columns:repeat(auto-fit,minmax(290px,1fr));gap:24px;margin-top:46px;
+       max-width:800px;margin-inline:auto}
+.plan{background:#fff;border:1.5px solid var(--line);border-radius:var(--r);padding:34px 30px;position:relative}
+.plan.hot{border-color:var(--teal);box-shadow:var(--shadow)}
+.tagpop{position:absolute;top:-13px;left:30px;background:var(--teal);color:#fff;font-size:.7rem;
+        font-weight:800;letter-spacing:.08em;padding:6px 13px;border-radius:999px}
+.price{font-size:2.7rem;font-weight:900;color:var(--ink);letter-spacing:-.03em;margin:14px 0 4px}
+.price span{font-size:.95rem;font-weight:600;color:var(--body)}
+
+/* ===== FAQ ===== */
+details{border-bottom:1px solid var(--line);padding:20px 0}
+summary{cursor:pointer;font-weight:700;color:var(--ink);font-size:1.04rem;list-style:none;
+        display:flex;justify-content:space-between;gap:16px}
+summary::-webkit-details-marker{display:none}
+summary::after{content:'+';color:var(--teal);font-weight:800;font-size:1.4rem;line-height:1}
+details[open] summary::after{content:'−'}
+details p{margin-top:12px;font-size:.98rem;max-width:64ch}
+
+/* ===== CTA ===== */
+.cta{background:linear-gradient(135deg,#0B7E71,#0F9E8E);color:#fff;text-align:center}
+.cta h2{color:#fff}
+.cta p{color:rgba(255,255,255,.9);max-width:44ch;margin:14px auto 0}
+.form{display:flex;gap:10px;max-width:470px;margin:30px auto 0}
+.form input{flex:1;padding:15px 18px;border:0;border-radius:999px;font:inherit;font-size:1rem}
+.form button{background:var(--ink);color:#fff}
+@media(max-width:520px){.form{flex-direction:column}}
+.fine{font-size:.82rem;color:rgba(255,255,255,.75);margin-top:14px}
+
+footer{background:var(--ink);color:#8FA3B8;padding:56px 0;font-size:.9rem}
+footer .wrap{display:flex;flex-wrap:wrap;gap:20px;justify-content:space-between;align-items:center}
+footer a{color:#C6D4E2;text-decoration:none;margin-left:20px}
+footer a:hover{color:#fff}
+
+
+/* ===== Contractor / live-agent pair ===== */
+.duo{display:grid;grid-template-columns:1fr 1fr;gap:26px;margin-top:44px}
+@media(max-width:900px){.duo{grid-template-columns:1fr}}
+.big-card{background:#fff;border:1px solid var(--line);border-radius:var(--r);overflow:hidden;
+          display:flex;flex-direction:column;transition:.22s}
+.big-card:hover{box-shadow:var(--shadow);transform:translateY(-3px)}
+.big-media{aspect-ratio:16/9;overflow:hidden;background:var(--soft)}
+.big-media img{width:100%;height:100%;object-fit:cover;display:block}
+.big-body{padding:26px 26px 30px}
+.big-body h3{font-size:1.4rem;font-weight:800;margin:10px 0 12px}
+.agent-media{background:linear-gradient(135deg,#0B7E71,#0F9E8E);display:flex;align-items:center;padding:20px}
+.chat-demo{display:grid;gap:8px;width:100%}
+.bubble{font-size:.85rem;line-height:1.45;padding:9px 13px;border-radius:14px;max-width:86%}
+.bubble.them{background:rgba(255,255,255,.94);color:var(--ink);justify-self:end;border-bottom-right-radius:5px}
+.bubble.me{background:rgba(0,0,0,.24);color:#fff;justify-self:start;border-bottom-left-radius:5px}
+.bubble.sys{background:transparent;color:rgba(255,255,255,.85);font-size:.76rem;justify-self:center;
+            border:1px dashed rgba(255,255,255,.45);border-radius:999px;padding:5px 12px}
+
+/* ===== Chat widget ===== */
+.chat-fab{position:fixed;right:20px;bottom:20px;z-index:100;width:58px;height:58px;border-radius:50%;
+          border:0;cursor:pointer;background:var(--teal);color:#fff;box-shadow:0 10px 30px rgba(11,18,32,.25);
+          display:grid;place-items:center;transition:.2s}
+.chat-fab:hover{background:var(--teal-dk);transform:scale(1.05)}
+.chat-fab svg{width:26px;height:26px}
+.chat-panel{position:fixed;right:20px;bottom:88px;z-index:100;width:min(384px,calc(100vw - 40px));
+            height:min(548px,calc(100vh - 130px));background:#fff;border-radius:18px;overflow:hidden;
+            box-shadow:0 26px 70px rgba(11,18,32,.30);display:none;flex-direction:column}
+.chat-panel.open{display:flex}
+.chat-head{background:var(--ink);color:#fff;padding:15px 18px;display:flex;align-items:center;gap:10px}
+.chat-head b{font-size:.98rem}
+.chat-head span{font-size:.76rem;color:#9DB0C4;display:block}
+.chat-head button{margin-left:auto;background:transparent;border:0;color:#9DB0C4;font-size:1.35rem;cursor:pointer}
+.chat-log{flex:1;overflow-y:auto;padding:16px;display:flex;flex-direction:column;gap:10px;background:var(--soft)}
+.msg{font-size:.9rem;line-height:1.5;padding:10px 13px;border-radius:14px;max-width:84%;white-space:pre-wrap}
+.msg.bot{background:#fff;border:1px solid var(--line);color:var(--ink);align-self:flex-start;border-bottom-left-radius:5px}
+.msg.user{background:var(--teal);color:#fff;align-self:flex-end;border-bottom-right-radius:5px}
+.msg.chat-in{display:flex;gap:8px;padding:12px;border-top:1px solid var(--line);background:#fff}
+.chat-in input{flex:1;padding:11px 14px;border:1px solid var(--line);border-radius:999px;font:inherit;font-size:.92rem}
+.chat-in input:focus{outline:none;border-color:var(--teal)}
+.chat-in button{background:var(--teal);color:#fff;border:0;border-radius:50%;width:40px;height:40px;cursor:pointer;flex:none}
+.chat-in button:disabled{opacity:.5;cursor:default}
+.esc{display:grid;gap:8px;padding:12px;border-top:1px solid var(--line);background:#FFFDF5}
+.esc input{padding:10px 13px;border:1px solid var(--line);border-radius:10px;font:inherit;font-size:.9rem}
+.esc button{padding:11px;border:0;border-radius:10px;background:var(--ink);color:#fff;font:inherit;font-weight:700;cursor:pointer}
+.esc p{font-size:.78rem;color:var(--body)}
+@media(prefers-reduced-motion:reduce){.chat-fab,.big-card{transition:none}}
+</style>
 </head>
 <body>
 
-<!-- ============ NAV ============ -->
-<nav class="nav" id="nav">
-  <div class="container nav-inner">
-    <a class="brand" href="#top" aria-label="SnapFix.Homes home">
-      <svg viewBox="0 0 24 24" fill="none" stroke="#4D8DFF" stroke-width="1.8"><path d="M3 11 12 3l9 8"/><path d="M5 10v10h14V10"/><circle cx="12" cy="14" r="2.6"/><path d="M12 11.4v-1M12 17.6v-1M14.6 14h1M8.4 14h1"/></svg>
-      SnapFix<span class="accent">.Homes</span>
+
+<header class="nav">
+  <div class="wrap">
+    <a class="brand" href="#">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><path d="M3 11 12 3l9 8"/><path d="M5 10v10h14V10"/><circle cx="12" cy="14" r="2.5"/></svg>
+      SnapFix<span style="color:var(--teal)">.Homes</span>
     </a>
-    <button class="menu-toggle" aria-label="Menu" onclick="document.getElementById('nav').classList.toggle('open')">☰</button>
-    <div class="nav-links">
-      <a href="#how-it-works">How It Works</a>
-      <a href="#features">Features</a>
+    <nav>
+      <a href="#how">How it works</a>
+      <a href="#what">What it fixes</a>
       <a href="#examples">Examples</a>
       <a href="#pricing">Pricing</a>
       <a href="#faq">FAQ</a>
-      <a class="cb-badge" href="https://claybirdlabs.com/" aria-label="Back to Claybird Labs"><svg viewBox="0 0 64 64" aria-hidden="true"><path d="M48,30.6 L60.5,32.8 L48,34.4 Z" fill="#8C3F22"/><path d="M54,32.5 C51.5,30 45,28.5 38,29.5 C27,31 18,36 14,44 C10,49 6,53 2,59 C12,54 20,50 26,46 C32,44 40,41 46,38.5 C50.5,37.2 54,35 54,32.5 Z" fill="#B4532F"/><path d="M29,33 C25,25 23,14 25,5 C33,11 39,20 41,30 C37,34 32,35 29,33 Z" fill="#E0906A"/><circle cx="45" cy="32.2" r="1.5" fill="#FDF8F4"/></svg> Claybird Labs</a>
-    </div>
-    <div class="nav-cta">
-      <a class="login" href="#coming-soon">Log In</a>
-      <a class="btn" href="#coming-soon" style="opacity:.7;pointer-events:none">Coming Soon</a>
-    </div>
-  </div>
-</nav>
-
-<!-- ============ HERO ============ -->
-<header class="hero" id="top">
-  <div class="container hero-grid">
-    <div>
-      <span class="pill">HOME REPAIR AI</span>
-      <h1>Fix it right.<br>Start with a <span class="accent">snap.</span></h1>
-      <p class="lede">SnapFix.Homes uses AI to identify home repair issues, explain what's wrong, and show you how to fix it—step by step.</p>
-      <div class="hero-ctas">
-        <a class="btn big" href="#coming-soon">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
-          <span>Snap a Problem<span class="btn-sub">Get AI Help Now</span></span>
-        </a>
-        <a class="btn ghost big" href="#how-it-works">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
-          See How It Works
-        </a>
-      </div>
-
-      <form class="wl-inline" data-waitlist data-source="hero" novalidate>
-        <input type="email" name="email" placeholder="Enter your email" aria-label="Email address" required autocomplete="email">
-        <button type="submit">Notify me at launch</button>
-      </form>
-      <div class="hero-trust">
-        <div class="trust">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06A1.65 1.65 0 0 0 15 19.4a1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.6 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.6a1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
-          <div><b>AI-Powered</b><span>Smart. Fast. Accurate.</span></div>
-        </div>
-        <div class="trust">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 11 12 3l9 8"/><path d="M5 10v10h14V10"/></svg>
-          <div><b>For Every Home</b><span>Inside &amp; Out</span></div>
-        </div>
-        <div class="trust">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
-          <div><b>Save Time &amp; Money</b><span>Fix with Confidence</span></div>
-        </div>
-      </div>
-    </div>
-
-    <div class="hero-visual">
-      <!-- CSS phone mockup -->
-      <div class="phone" aria-hidden="true">
-        <div class="phone-screen">
-          <div class="phone-status"><span>9:41</span><span>●●● ⌁ ▮</span></div>
-          <div class="phone-brand">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 11 12 3l9 8"/><path d="M5 10v10h14V10"/></svg>
-            SnapFix.Homes
-          </div>
-          <div class="phone-photo"><div class="pipe"></div><div class="joint"></div><div class="drip"></div></div>
-          <div class="phone-body">
-            <div class="row-between">
-              <div>
-                <div class="phone-label">Detected Issue</div>
-                <div class="phone-issue">Leaking Pipe</div>
-                <div class="conf">Confidence: <b>95%</b></div>
-              </div>
-              <span style="color:#98A2B3">›</span>
-            </div>
-            <div class="phone-fix">
-              <div class="phone-label">Recommended Fix</div>
-              <p>Replace the worn washer and tighten the connection.</p>
-            </div>
-            <span class="phone-btn">View Step-by-Step Guide</span>
-            <div class="phone-tabs">
-              <span class="active"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 11 12 3l9 8"/><path d="M5 10v10h14V10"/></svg>Home</span>
-              <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>History</span>
-              <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>Camera</span>
-              <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>Guides</span>
-              <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>Profile</span>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div class="qr-side">
-        <p class="hand qr-note">Scan to get AI home repair help now!</p>
-        <svg class="arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 4c4 3 7 8 7 14"/><path d="M9 16l5 3 3-5"/></svg>
-        <div class="qr-card">
-          <img src="https://api.qrserver.com/v1/create-qr-code/?size=300x300&amp;data=https%3A%2F%2Fsnapfix.homes%2F" alt="QR code linking to SnapFix on the App Store" loading="lazy">
-          <div class="qr-tag">📱 SCAN ME</div>
-        </div>
-      </div>
-    </div>
+    </nav>
+    <a class="btn btn-p" href="#join" style="padding:12px 22px;font-size:.94rem">Get early access</a>
   </div>
 </header>
 
-<!-- ============ TRUST BAND ============ -->
-<!-- Deliberately product facts, not usage metrics. Nothing here claims a user
-     count, a rating or a testimonial, because SnapFix has not launched and any
-     such number would be invented. Replace with real figures once there are
-     some — the layout is ready for them. -->
-<section class="trust-band">
-  <div class="container">
-    <div class="tb-item"><b>Seconds</b><span>From photo to diagnosis</span></div>
-    <div class="tb-item"><b>Every room</b><span>Plumbing to HVAC and beyond</span></div>
-    <div class="tb-item"><b>Free to start</b><span>No card to try it</span></div>
-    <div class="tb-item"><b>Confidence score</b><span>Shown on every result</span></div>
-  </div>
-</section>
-
-<!-- ============ HOW IT WORKS ============ -->
-<section class="dark" id="how-it-works">
-  <div class="container">
-    <div class="kicker">HOW IT WORKS</div>
-    <h2>Get answers in 3 simple steps</h2>
-    <div class="steps">
-      <div class="step">
-        <div class="step-icon">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
-          <span class="step-num">1</span>
-        </div>
-        <b>Snap</b>
-        <p>Take a photo of the problem.</p>
-      </div>
-      <div class="step">
-        <div class="step-icon">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 3l1.7 4.6L18 9l-4.3 1.4L12 15l-1.7-4.6L6 9l4.3-1.4L12 3z"/><path d="M19 14l.8 2.2L22 17l-2.2.8L19 20l-.8-2.2L16 17l2.2-.8L19 14z"/></svg>
-          <span class="step-num">2</span>
-        </div>
-        <b>AI Analyzes</b>
-        <p>Our AI identifies the issue and explains what's wrong.</p>
-      </div>
-      <div class="step">
-        <div class="step-icon">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M14.7 6.3a4.5 4.5 0 0 0-6 6L3 18l3 3 5.7-5.7a4.5 4.5 0 0 0 6-6L14 13l-3-3 3.7-3.7z"/></svg>
-          <span class="step-num">3</span>
-        </div>
-        <b>Fix It</b>
-        <p>Get step-by-step instructions, tools, and pro tips.</p>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ============ FEATURES ============ -->
-<section class="light" id="features">
-  <div class="container features-grid">
+<!-- HERO -->
+<section class="hero">
+  <div class="wrap hero-grid">
     <div>
-      <div class="eyebrow">BUILT FOR REAL HOMEOWNERS</div>
-      <h2>Smart help for <span class="accent">every</span><br>home repair.</h2>
-      <div class="feature-list">
-        <div class="feature">
-          <div class="feature-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg></div>
-          <div><b>AI-Powered Detection</b><p>Advanced AI recognizes thousands of home issues instantly.</p></div>
-        </div>
-        <div class="feature">
-          <div class="feature-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14.7 6.3a4.5 4.5 0 0 0-6 6L3 18l3 3 5.7-5.7a4.5 4.5 0 0 0 6-6L14 13l-3-3 3.7-3.7z"/></svg></div>
-          <div><b>Tools &amp; Materials</b><p>Get a list of what you need to get the job done.</p></div>
-        </div>
-        <div class="feature">
-          <div class="feature-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="5" y="2" width="14" height="20" rx="2"/><path d="M12 18h.01"/></svg></div>
-          <div><b>For Every Skill Level</b><p>Whether you're a beginner or a DIY pro, we've got you.</p></div>
-        </div>
-        <div class="feature">
-          <div class="feature-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg></div>
-          <div><b>Step-by-Step Guides</b><p>Clear instructions with photos and easy-to-follow steps.</p></div>
-        </div>
-        <div class="feature">
-          <div class="feature-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg></div>
-          <div><b>Save &amp; Track</b><p>Save your fixes and track your home maintenance.</p></div>
-        </div>
-        <div class="feature">
-          <div class="feature-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 11 12 3l9 8"/><path d="M5 10v10h14V10"/></svg></div>
-          <div><b>Any Room, Any Problem</b><p>Plumbing, electrical, drywall, appliances, and more.</p></div>
-        </div>
+      <span class="eyebrow">Home repair, diagnosed by AI</span>
+      <h1>Fix it right.<br>Start with a <span class="accent">snap.</span></h1>
+      <p class="lede">Photograph the problem. SnapFix tells you what's wrong, how serious it is,
+        what it should cost, and the exact steps to put it right.</p>
+      <div class="cta-row">
+        <a class="btn btn-p" href="#join">Get early access</a>
+        <a class="btn btn-s" href="#how">See how it works</a>
       </div>
+      <p style="font-size:.9rem">Free to start · iPhone · No card required</p>
     </div>
-    <div class="house-blob">
-      <!-- Drop a house photo at images/house.jpg to replace the illustration -->
-      <img class="house-img" src="images/house.jpg" alt="A well-maintained two-storey home" loading="lazy"
-           onerror="this.outerHTML='<svg class=&quot;house-img&quot; viewBox=&quot;0 0 430 322&quot; xmlns=&quot;http://www.w3.org/2000/svg&quot;><rect width=&quot;430&quot; height=&quot;322&quot; fill=&quot;%23DCEBFF&quot;/><path d=&quot;M70 200 215 90l145 110v92H70z&quot; fill=&quot;%23ffffff&quot;/><path d=&quot;M55 205 215 82l160 123&quot; stroke=&quot;%230E1B3D&quot; stroke-width=&quot;10&quot; fill=&quot;none&quot; stroke-linecap=&quot;round&quot;/><rect x=&quot;195&quot; y=&quot;230&quot; width=&quot;42&quot; height=&quot;62&quot; fill=&quot;%231A6BEA&quot;/><rect x=&quot;105&quot; y=&quot;225&quot; width=&quot;46&quot; height=&quot;38&quot; fill=&quot;%239CC0FF&quot;/><rect x=&quot;280&quot; y=&quot;225&quot; width=&quot;46&quot; height=&quot;38&quot; fill=&quot;%239CC0FF&quot;/></svg>'">
+    <div class="hero-photo">
+      <img src="images/photo-plumbing.jpg" alt="Someone repairing the pipework under a kitchen sink">
+      <div class="float">
+        <div class="k">Detected issue</div>
+        <div class="v">Leaking P-trap · worn washer</div>
+        <div class="m">Confidence 94% · about $12–40 · 30–45 min</div>
+      </div>
     </div>
   </div>
 </section>
 
-<!-- ============ EXAMPLES ============ -->
-<section class="examples" id="examples">
-  <div class="container">
-    <div class="kicker" style="color:var(--blue)">EXAMPLES</div>
-    <h2 style="text-align:center;font-size:2.1rem;letter-spacing:-.02em;font-weight:800">See SnapFix.Homes in action</h2>
-    <style>
-      .cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 28px; }
-      .card { border-radius: 16px; overflow: hidden; background: #fff; box-shadow: 0 2px 16px rgba(0,0,0,0.08); }
-      .card-wrap { position: relative; background: #f4f5f7; }
-      .card-img { width: 100%; height: auto; display: block; object-fit: contain; }
-      .card-body { padding: 16px 18px 20px; }
-      .card-body b { font-size: 1rem; font-weight: 700; color: #0E1B3D; display: block; margin-bottom: 6px; }
-      .card-body p { font-size: .88rem; color: #6b7280; margin: 0; line-height: 1.5; }
-      .tag { position: absolute; bottom: 12px; left: 12px; background: #1a73e8; color: #fff; font-size: .75rem; font-weight: 600; padding: 4px 12px; border-radius: 20px; }
-    </style>
+<!-- STAT BAND -->
+<div class="band">
+  <div class="wrap">
+    <div><b>Seconds</b><span>From photo to diagnosis</span></div>
+    <div><b>Every room</b><span>Plumbing to HVAC</span></div>
+    <div><b>Free to start</b><span>No card required</span></div>
+    <div><b>Confidence score</b><span>On every result</span></div>
+  </div>
+</div>
+
+<!-- HOW IT WORKS -->
+<section id="how">
+  <div class="wrap">
+    <span class="eyebrow">How it works</span>
+    <h2>Three steps, no guesswork</h2>
+
+    <div class="row">
+      <div>
+        <span class="eyebrow">Step 01</span>
+        <h3>Snap the problem</h3>
+        <p>Point your phone at the leak, crack, or dead outlet. Add up to three angles when the
+          problem is hard to see in one shot.</p>
+      </div>
+      <div class="row-media"><img src="images/snapfix-demo.gif" alt="Diagnosing a dripping pipe"></div>
+    </div>
+
+    <div class="row flip">
+      <div>
+        <span class="eyebrow">Step 02</span>
+        <h3>Get a real diagnosis</h3>
+        <p>Not a search result — a specific answer: what's failed, why, how urgent it is, and a
+          confidence score so you know how much to trust it.</p>
+        <ul class="ticks">
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M20 6 9 17l-5-5"/></svg>Cost range before you commit</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M20 6 9 17l-5-5"/></svg>Says plainly when to call a pro</li>
+        </ul>
+      </div>
+      <div class="row-media"><img src="images/snapfix-outlet.gif" alt="Diagnosing an outlet that stopped working"></div>
+    </div>
+
+    <div class="row">
+      <div>
+        <span class="eyebrow">Step 03</span>
+        <h3>Follow the steps</h3>
+        <p>Step-by-step instructions written for your skill level, with the tools and materials
+          listed before you start — so you buy once.</p>
+      </div>
+      <div class="row-media"><img src="images/photo-painting.jpg" alt="Two people repainting a room together"></div>
+    </div>
+  </div>
+</section>
+
+<!-- BEYOND DIAGNOSIS -->
+<section id="more">
+  <div class="wrap">
+    <span class="eyebrow">When DIY isn't the answer</span>
+    <h2>You're not on your own</h2>
+    <p class="lede" style="margin-top:16px">Some jobs shouldn't be a DIY project, and some questions
+      need a person. SnapFix handles both.</p>
+
+    <div class="duo">
+      <div class="big-card">
+        <div class="big-media"><img src="images/photo-hvac.jpg" alt="An outdoor HVAC condenser unit beside a house"></div>
+        <div class="big-body">
+          <span class="chip">Find a pro</span>
+          <h3>Find a local contractor</h3>
+          <p>When a repair is beyond DIY — or code says it has to be — SnapFix hands the diagnosis
+            to a nearby contractor, so you're not re-explaining the problem from scratch. They see
+            what it is, what's needed, and what it should cost.</p>
+          <ul class="ticks">
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M20 6 9 17l-5-5"/></svg>Matched by trade and postal code</li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M20 6 9 17l-5-5"/></svg>Your diagnosis travels with the request</li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M20 6 9 17l-5-5"/></svg>Told plainly when a pro is required</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="big-card">
+        <div class="big-media agent-media">
+          <div class="chat-demo" aria-hidden="true">
+            <div class="bubble them">Can someone actually look at this with me?</div>
+            <div class="bubble me">Type <b>live agent</b> and I'll bring a person in.</div>
+            <div class="bubble them">live agent</div>
+            <div class="bubble sys">A SnapFix team member has been notified</div>
+          </div>
+        </div>
+        <div class="big-body">
+          <span class="chip">Talk to a human</span>
+          <h3>Chat with a live agent</h3>
+          <p>The assistant on this page answers questions about SnapFix — what it covers, what it
+            costs, how to get started. Ask for a live agent and a real person is notified on their
+            phone straight away.</p>
+          <ul class="ticks">
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M20 6 9 17l-5-5"/></svg>Instant answers, day or night</li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M20 6 9 17l-5-5"/></svg>Say "live agent" for a human</li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M20 6 9 17l-5-5"/></svg>We reply by email, usually same day</li>
+          </ul>
+          <p style="margin-top:20px"><a class="btn btn-p" href="#" onclick="openChat();return false">Try the assistant</a></p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- COVERAGE -->
+<section class="soft" id="what">
+  <div class="wrap">
+    <span class="eyebrow">What it fixes</span>
+    <h2>If you can photograph it, start there</h2>
+    <div class="grid-4">
+      <div class="tile"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M6 3v7a6 6 0 0 0 12 0V3"/><path d="M12 16v5"/></svg><b>Plumbing</b><p>Drips, leaks, running toilets, slow drains.</p></div>
+      <div class="tile"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M13 2 4 14h7l-1 8 9-12h-7z"/></svg><b>Electrical</b><p>Dead outlets, switches, tripping breakers.</p></div>
+      <div class="tile"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 10h18"/></svg><b>Walls &amp; ceilings</b><p>Holes, cracks, water stains, patching.</p></div>
+      <div class="tile"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 8h16M4 12h16M4 16h16"/></svg><b>HVAC</b><p>Weak airflow, filters, vents, odd noises.</p></div>
+      <div class="tile"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="4" y="3" width="16" height="18" rx="2"/><path d="M8 7h8M8 12h8"/></svg><b>Appliances</b><p>Error codes and what they actually mean.</p></div>
+      <div class="tile"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 3v6M9 9h6l-1 12h-4z"/></svg><b>Fixtures</b><p>Wobbling taps, handles, hinges, mounts.</p></div>
+      <div class="tile"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M19 3 8 14l-3-3"/><path d="M5 21h14"/></svg><b>Paint &amp; surfaces</b><p>Peeling, damp, damage, prep and finish.</p></div>
+      <div class="tile"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="4"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3"/></svg><b>Pests</b><p>Identify what you're looking at, fast.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- EXAMPLES -->
+<section id="examples">
+  <div class="wrap">
+    <span class="eyebrow">Examples</span>
+    <h2>See it work</h2>
     <div class="cards">
-      <div class="card"><div class="card-wrap">
-        <img class="card-img" src="images/snapfix-demo.gif" alt="Dripping pipe under a sink">
-        <span class="tag">Plumbing</span></div>
-        <div class="card-body"><b>Dripping Pipe</b><p>Find the cause and learn how to stop the leak.</p></div>
-      </div>
-      <div class="card"><div class="card-wrap">
-        <img class="card-img" src="images/snapfix-outlet.gif" alt="Wall outlet not working">
-        <span class="tag">Electrical</span></div>
-        <div class="card-body"><b>Outlet Not Working</b><p>Diagnose common outlet issues and fix safely.</p></div>
-      </div>
-      <div class="card"><div class="card-wrap">
-        <img class="card-img" src="images/snapfix-hole-in-wall.gif" alt="Hole in drywall">
-        <span class="tag">Drywall</span></div>
-        <div class="card-body"><b>Hole in the Wall</b><p>Easy patching and repair, step by step.</p></div>
-      </div>
-      <div class="card"><div class="card-wrap">
-        <img class="card-img" src="images/snapfix-loose-faucet.gif" alt="Loose kitchen faucet">
-        <span class="tag">Fixtures</span></div>
-        <div class="card-body"><b>Loose Faucet</b><p>Tighten it up and stop the wobble.</p></div>
-      </div>
-      <div class="card"><div class="card-wrap">
-        <img class="card-img" src="images/snapfix-weak-airflow.gif" alt="Air vent with weak airflow">
-        <span class="tag">HVAC</span></div>
-        <div class="card-body"><b>Weak Airflow</b><p>Improve airflow and get your system running better.</p></div>
-      </div>
+      <div class="card"><img src="images/snapfix-demo.gif" alt="Dripping pipe"><div class="cb"><span class="chip">Plumbing</span><b>Dripping pipe</b><p>Find the cause and stop the leak.</p></div></div>
+      <div class="card"><img src="images/snapfix-outlet.gif" alt="Outlet not working"><div class="cb"><span class="chip">Electrical</span><b>Dead outlet</b><p>Diagnose it and fix it safely.</p></div></div>
+      <div class="card"><img src="images/snapfix-hole-in-wall.gif" alt="Hole in drywall"><div class="cb"><span class="chip">Drywall</span><b>Hole in the wall</b><p>Patch it so it disappears.</p></div></div>
+      <div class="card"><img src="images/snapfix-loose-faucet.gif" alt="Loose faucet"><div class="cb"><span class="chip">Fixtures</span><b>Loose faucet</b><p>Tighten it, stop the wobble.</p></div></div>
+      <div class="card"><img src="images/snapfix-weak-airflow.gif" alt="Weak airflow"><div class="cb"><span class="chip">HVAC</span><b>Weak airflow</b><p>Get the system breathing again.</p></div></div>
     </div>
   </div>
 </section>
 
-<!-- ============ COVERAGE ============ -->
-<section class="coverage" id="coverage">
-  <div class="container">
-    <div class="kicker" style="color:var(--blue)">WHAT IT COVERS</div>
-    <h2 style="text-align:center;font-size:2.1rem;letter-spacing:-.02em;font-weight:800">If you can photograph it, start there</h2>
-    <div class="cov-grid">
-      <div class="cov"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><path d="M6 3v7a6 6 0 0 0 12 0V3"/><path d="M12 16v5"/></svg><b>Plumbing</b></div>
-      <div class="cov"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><path d="M13 2 4 14h7l-1 8 9-12h-7z"/></svg><b>Electrical</b></div>
-      <div class="cov"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 10h18M9 4v6"/></svg><b>Drywall &amp; walls</b></div>
-      <div class="cov"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><path d="M4 8h16M4 12h16M4 16h16"/></svg><b>HVAC &amp; airflow</b></div>
-      <div class="cov"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><rect x="4" y="3" width="16" height="18" rx="2"/><path d="M8 7h8M8 12h8"/></svg><b>Appliances</b></div>
-      <div class="cov"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><path d="M12 3v6M9 9h6l-1 12h-4z"/></svg><b>Fixtures</b></div>
-      <div class="cov"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><path d="M19 3 8 14l-3-3"/><path d="M5 21h14"/></svg><b>Paint &amp; surfaces</b></div>
-      <div class="cov"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><circle cx="12" cy="12" r="4"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3"/></svg><b>Pests</b></div>
-    </div>
-  </div>
-</section>
-
-<!-- ============ PRICING ============ -->
-<section class="pricing" id="pricing">
-  <div class="container">
-    <div class="kicker" style="color:var(--blue)">PRICING</div>
-    <h2 style="text-align:center;font-size:2.1rem;letter-spacing:-.02em;font-weight:800">Simple, honest pricing</h2>
-    <div class="plans">
+<!-- PRICING -->
+<section class="soft" id="pricing">
+  <div class="wrap" style="text-align:center">
+    <span class="eyebrow">Pricing</span>
+    <h2>Simple, honest pricing</h2>
+    <div class="plans" style="text-align:left">
       <div class="plan">
         <h3>Free</h3>
         <div class="price">$0<span>/month</span></div>
-        <p style="color:var(--muted);font-size:.9rem">Try SnapFix on your next repair.</p>
-        <ul>
-          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6 9 17l-5-5"/></svg>AI photo diagnosis</li>
-          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6 9 17l-5-5"/></svg>Basic step-by-step guides</li>
-          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6 9 17l-5-5"/></svg>Limited diagnoses per month</li>
+        <p style="font-size:.93rem">Try it on your next repair.</p>
+        <ul class="ticks">
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M20 6 9 17l-5-5"/></svg>AI photo diagnosis</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M20 6 9 17l-5-5"/></svg>Step-by-step guides</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M20 6 9 17l-5-5"/></svg>Limited diagnoses monthly</li>
         </ul>
-        <a class="btn ghost" href="#coming-soon" style="opacity:.6;pointer-events:none">Coming Soon</a>
       </div>
-      <div class="plan featured">
-        <span class="badge">MOST POPULAR</span>
+      <div class="plan hot">
+        <span class="tagpop">MOST POPULAR</span>
         <h3>SnapFix Pro</h3>
         <div class="price">$6.99<span>/month</span></div>
-        <p style="color:var(--muted);font-size:.9rem">Unlimited help for your whole home.</p>
-        <ul>
-          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6 9 17l-5-5"/></svg>Unlimited AI diagnoses</li>
-          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6 9 17l-5-5"/></svg>Multi-photo analysis (up to 3 angles)</li>
-          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6 9 17l-5-5"/></svg>Follow-up AI chat about your repair</li>
-          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6 9 17l-5-5"/></svg>Shopping lists with cost estimates</li>
-          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6 9 17l-5-5"/></svg>Before &amp; after fix verification</li>
+        <p style="font-size:.93rem">Unlimited help for the whole house.</p>
+        <ul class="ticks">
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M20 6 9 17l-5-5"/></svg>Unlimited diagnoses</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M20 6 9 17l-5-5"/></svg>Up to 3 photo angles</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M20 6 9 17l-5-5"/></svg>Follow-up AI chat</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M20 6 9 17l-5-5"/></svg>Shopping lists with costs</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M20 6 9 17l-5-5"/></svg>Before &amp; after verification</li>
         </ul>
-        <a class="btn" href="#coming-soon" style="opacity:.6;pointer-events:none">Coming Soon</a>
       </div>
     </div>
-    <p style="text-align:center;color:var(--muted);font-size:.82rem;margin-top:26px">Subscriptions are billed through the App Store and can be cancelled anytime in your Apple ID settings.</p>
+    <p style="font-size:.85rem;margin-top:26px">Billed through the App Store. Cancel any time in your Apple ID settings.</p>
   </div>
 </section>
 
-<!-- ============ FAQ ============ -->
-<section class="faq" id="faq">
-  <div class="container">
-    <div class="kicker" style="color:var(--blue)">FAQ</div>
-    <h2>Frequently asked questions</h2>
-    <div class="faq-list">
-      <details>
-        <summary>What kinds of problems can SnapFix diagnose?</summary>
-        <p>Plumbing issues (leaks, drips, clogs), wall and ceiling damage, appliance error codes, electrical concerns like outlets and switches, pest identification, paint and surface damage, fixtures, and much more. If you can photograph it, SnapFix can help.</p>
-      </details>
-      <details>
-        <summary>How accurate is the AI diagnosis?</summary>
-        <p>SnapFix shows a confidence score with every diagnosis so you always know how certain the AI is. You can add up to three photos from different angles for a more accurate result, and use the follow-up chat to ask questions about your specific situation.</p>
-      </details>
-      <details>
-        <summary>Is SnapFix a replacement for a professional?</summary>
-        <p>SnapFix gives you a clear understanding of the problem and step-by-step guidance for repairs you can safely do yourself. For complex, dangerous, or code-regulated work — like major electrical or gas — we always recommend a licensed professional, and the app will tell you when that's the case.</p>
-      </details>
-      <details>
-        <summary>What happens to the photos I upload?</summary>
-        <p>Your photos are used to generate your diagnosis and are stored securely with your account so you can revisit past repairs. We never sell your photos or data. See our <a href="privacy.html" style="color:var(--blue);text-decoration:underline">Privacy Policy</a> for full details.</p>
-      </details>
-      <details>
-        <summary>Which devices does SnapFix support?</summary>
-        <p>SnapFix is available now for iPhone on the App Store (iOS 17 or later). An Android version is in the works.</p>
-      </details>
-      <details>
-        <summary>How do I cancel my subscription?</summary>
-        <p>Subscriptions are handled by Apple. Open Settings on your iPhone → tap your name → Subscriptions → SnapFix → Cancel. You'll keep Pro access until the end of your billing period.</p>
-      </details>
+<!-- FAQ -->
+<section id="faq">
+  <div class="wrap" style="max-width:820px">
+    <span class="eyebrow">FAQ</span>
+    <h2>Questions, answered</h2>
+    <div style="margin-top:34px">
+      <details open><summary>What can SnapFix diagnose?</summary><p>Plumbing leaks and clogs, wall and ceiling damage, appliance error codes, outlets and switches, pests, paint and surface damage, fixtures, and more. If you can photograph it, start there.</p></details>
+      <details><summary>How accurate is it?</summary><p>Every diagnosis carries a confidence score, so you always know how certain the answer is. Add up to three angles for a better read, and use follow-up chat to ask about your specific situation.</p></details>
+      <details><summary>Does this replace a professional?</summary><p>No — and it will tell you so. For anything complex, dangerous or code-regulated, like major electrical or gas work, it points you to a licensed pro rather than talking you through it.</p></details>
+      <details><summary>What happens to my photos?</summary><p>They generate your diagnosis and are stored with your account so you can revisit past repairs. They are never sold. See the <a href="privacy.html" style="color:var(--teal);font-weight:600">Privacy Policy</a>.</p></details>
+      <details><summary>Which devices are supported?</summary><p>iPhone on iOS 17 or later. An Android version is in the works.</p></details>
+      <details><summary>How do I cancel?</summary><p>Settings → your name → Subscriptions → SnapFix → Cancel. Pro access runs to the end of the billing period.</p></details>
     </div>
   </div>
 </section>
 
-<!-- ============ WAITLIST ============ -->
-<section class="waitlist" id="waitlist">
-  <div class="container">
-    <div class="kicker" style="color:var(--blue)">EARLY ACCESS</div>
-    <h2 style="text-align:center;font-size:2.1rem;letter-spacing:-.02em;font-weight:800">Be first to know</h2>
-    <p style="text-align:center;color:var(--muted);max-width:520px;margin:10px auto 0">
-      Leave your email and we'll send you a download link the moment SnapFix lands on the App Store.
-    </p>
-
-    <div class="wl-box">
-      <form class="wl-form" data-waitlist data-source="section" novalidate>
-        <div class="wl-row">
-          <input type="text"  name="name"  placeholder="Your name" aria-label="Your name" required autocomplete="name">
-          <select name="role" aria-label="I am a">
-            <option value="homeowner">I'm a homeowner</option>
-            <option value="contractor">I'm a contractor</option>
-            <option value="landlord">I'm a landlord</option>
-          </select>
-        </div>
-        <input type="email" name="email" placeholder="you@example.com" aria-label="Email address" required autocomplete="email">
-        <button type="submit">Join the waitlist</button>
-        <p class="wl-err" data-error role="alert"></p>
-      </form>
-      <p class="wl-note">No spam, one email at launch. Unsubscribe any time.</p>
-    </div>
+<!-- CTA -->
+<section class="cta" id="join">
+  <div class="wrap">
+    <h2>Be first to know</h2>
+    <p>Leave your email and we'll send the download link the day SnapFix lands on the App Store.</p>
+    <form class="form" onsubmit="event.preventDefault();this.innerHTML='<p style=\'color:#fff;font-weight:700;margin:auto\'>You&rsquo;re on the list.</p>'">
+      <input type="email" placeholder="you@example.com" aria-label="Email address" required>
+      <button class="btn btn-p" type="submit" style="background:#0B1220">Notify me</button>
+    </form>
+    <p class="fine">One email at launch. Nothing else.</p>
   </div>
 </section>
 
-<!-- ============ CTA BAND ============ -->
-<section class="cta-band">
-  <div class="container cta-grid">
-    <div class="cta-brandline">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M3 11 12 3l9 8"/><path d="M5 10v10h14V10"/><circle cx="12" cy="14" r="2.6"/></svg>
-      <h3>Your home.<br>Smarter fixes.<br><span class="accent">Powered by AI.</span></h3>
-    </div>
-    <div class="cta-qr">
-      <div class="qr-card">
-        <img src="https://api.qrserver.com/v1/create-qr-code/?size=220x220&amp;data=https%3A%2F%2Fsnapfix.homes%2F" alt="QR code to download SnapFix" loading="lazy">
-      </div>
-      <p class="hand" style="max-width:120px">Scan to get the app now!</p>
-    </div>
-    <div class="cta-right">
-      <h4>Ready to fix that?</h4>
-      <p>Snap a problem and get expert help in seconds.</p>
-      <div class="store-row">
-        <a class="btn outline-light" href="#coming-soon">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
-          Get Started for Free
-        </a>
-        <a class="store-badge" href="#coming-soon">
-          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.05 20.28c-.96.95-2.05.8-3.08.35-1.09-.46-2.09-.48-3.24 0-1.44.62-2.2.44-3.06-.35C2.79 15.25 3.51 7.59 9.05 7.31c1.35.07 2.29.74 3.08.8 1.18-.24 2.31-.93 3.57-.84 1.51.12 2.65.72 3.4 1.8-3.12 1.87-2.38 5.98.48 7.13-.57 1.5-1.31 2.99-2.53 4.08zM12.03 7.25c-.15-2.23 1.66-4.07 3.74-4.25.29 2.58-2.34 4.5-3.74 4.25z"/></svg>
-          <span><small>Download on the</small><b>App Store</b></span>
-        </a>
-        <span class="store-badge" style="opacity:.55;cursor:default" title="Android version coming soon">
-          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M3 20.5v-17c0-.6.4-1.1.9-1.3l10.6 9.8L3.9 21.8c-.5-.2-.9-.7-.9-1.3zm13.8-7.2L6.05 22.74l8.49-4.9 2.26-4.54zm3.35-2.99c.4.3.65.77.65 1.29s-.25.99-.65 1.29l-2.27 1.31-2.46-2.6 2.46-2.6 2.27 1.31zM6.05 1.26l10.76 9.44-2.26-4.54-8.5-4.9z"/></svg>
-          <span><small>Coming soon on</small><b>Google Play</b></span>
-        </span>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ============ FOOTER ============ -->
-<footer class="footer">
-  <div class="container footer-inner">
-    <a class="brand" href="#top">
-      <svg viewBox="0 0 24 24" fill="none" stroke="#4D8DFF" stroke-width="1.8" width="24" height="24"><path d="M3 11 12 3l9 8"/><path d="M5 10v10h14V10"/></svg>
-      SnapFix<span class="accent">.Homes</span>
-    </a>
-    <div class="footer-links">
-      <a class="cb-foot" href="https://claybirdlabs.com/"><svg viewBox="0 0 64 64" aria-hidden="true"><path d="M48,30.6 L60.5,32.8 L48,34.4 Z" fill="#8C3F22"/><path d="M54,32.5 C51.5,30 45,28.5 38,29.5 C27,31 18,36 14,44 C10,49 6,53 2,59 C12,54 20,50 26,46 C32,44 40,41 46,38.5 C50.5,37.2 54,35 54,32.5 Z" fill="#B4532F"/><path d="M29,33 C25,25 23,14 25,5 C33,11 39,20 41,30 C37,34 32,35 29,33 Z" fill="#E0906A"/><circle cx="45" cy="32.2" r="1.5" fill="#FDF8F4"/></svg> Back to Claybird Labs</a>
-      <a href="support.html">Support</a>
-      <a href="support.html#contact">Contact</a>
-      <a href="privacy.html">Privacy Policy</a>
-      <a href="terms.html">Terms of Service</a>
-    </div>
-    <div class="socials">
-      <a href="#" aria-label="Facebook"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg></a>
-      <a href="#" aria-label="Instagram"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor"/></svg></a>
-      <a href="#" aria-label="YouTube"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M23 7.5s-.2-1.6-.9-2.3c-.9-.9-1.9-.9-2.4-1C16.6 4 12 4 12 4s-4.6 0-7.7.2c-.5.1-1.5.1-2.4 1-.7.7-.9 2.3-.9 2.3S.8 9.4.8 11.3v1.4c0 1.9.2 3.8.2 3.8s.2 1.6.9 2.3c.9.9 2 .9 2.5 1 1.8.2 7.6.2 7.6.2s4.6 0 7.7-.2c.5-.1 1.5-.1 2.4-1 .7-.7.9-2.3.9-2.3s.2-1.9.2-3.8v-1.4c0-1.9-.2-3.8-.2-3.8zM9.8 14.9V8.7l6.2 3.1-6.2 3.1z"/></svg></a>
-    </div>
+<footer>
+  <div class="wrap">
+    <div>© 2026 SnapFix.Homes — a <a href="https://claybirdlabs.com/" style="margin:0">Claybird Labs</a> project</div>
+    <div><a href="support.html">Support</a><a href="privacy.html">Privacy</a><a href="terms.html">Terms</a></div>
   </div>
 </footer>
 
-<!-- ============ TIMED MODAL ============ -->
-<div class="modal-backdrop" id="wl-modal" role="dialog" aria-modal="true"
-     aria-labelledby="wl-modal-title" aria-describedby="wl-modal-sub" hidden>
-  <div class="modal">
-    <button class="modal-x" type="button" aria-label="Close">&times;</button>
-    <span class="modal-badge">EARLY ACCESS</span>
-    <h3 id="wl-modal-title">Want a heads-up when SnapFix launches?</h3>
-    <p class="sub" id="wl-modal-sub">
-      Leave your email and we'll send the download link on launch day. One email, nothing else.
-    </p>
-    <form class="wl-form" data-waitlist data-source="modal" novalidate>
-      <div class="wl-row">
-        <input type="text" name="name" placeholder="Your name" aria-label="Your name" required autocomplete="name">
-        <select name="role" aria-label="I am a">
-          <option value="homeowner">I'm a homeowner</option>
-          <option value="contractor">I'm a contractor</option>
-          <option value="landlord">I'm a landlord</option>
-        </select>
-      </div>
-      <input type="email" name="email" placeholder="you@example.com" aria-label="Email address" required autocomplete="email">
-      <button type="submit">Notify me at launch</button>
-      <p class="wl-err" data-error role="alert"></p>
-    </form>
+<!-- ============ CHAT WIDGET ============ -->
+<button class="chat-fab" id="chatFab" aria-label="Open chat" onclick="openChat()">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 11.5a8.4 8.4 0 0 1-9 8.4 9 9 0 0 1-3.9-.9L3 20l1.3-3.8A8.4 8.4 0 0 1 3 11.5a8.5 8.5 0 0 1 9-8.4 8.4 8.4 0 0 1 9 8.4z"/></svg>
+</button>
+
+<div class="chat-panel" id="chatPanel" role="dialog" aria-modal="false" aria-label="SnapFix chat">
+  <div class="chat-head">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" width="22" height="22"><path d="M3 11 12 3l9 8"/><path d="M5 10v10h14V10"/></svg>
+    <div><b>SnapFix assistant</b><span>Ask anything — or type "live agent"</span></div>
+    <button type="button" aria-label="Close chat" onclick="closeChat()">&times;</button>
   </div>
+  <div class="chat-log" id="chatLog"></div>
+
+  <form class="chat-in" id="chatForm" onsubmit="return sendChat(event)">
+    <input id="chatText" placeholder="Ask about SnapFix…" autocomplete="off" aria-label="Message">
+    <button type="submit" id="chatSend" aria-label="Send">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18" style="margin:auto"><path d="M22 2 11 13"/><path d="M22 2 15 22l-4-9-9-4z"/></svg>
+    </button>
+  </form>
+
+  <form class="esc" id="escForm" style="display:none" onsubmit="return sendEscalation(event)">
+    <p><b>Bringing in a person.</b> Leave your details and they'll be notified right away.</p>
+    <input name="name" placeholder="Your name" required autocomplete="name">
+    <input name="email" type="email" placeholder="you@example.com" required autocomplete="email">
+    <input name="note" placeholder="What's it about? (optional)">
+    <button type="submit">Notify a live agent</button>
+    <p id="escErr" style="color:#B42318"></p>
+  </form>
 </div>
 
 <script>
 /* ==========================================================================
-   Waitlist — shared by the hero form, the section form and the timed modal.
-   Posts to the same Supabase table and launch-email function the other build
-   of this site already uses. The key below is the anon key: it is public by
-   design, and the table's only policy is INSERT, so nothing can be read back.
+   Site chat. General questions go to the `site-chat` edge function. Asking for
+   a human writes a row to support_contacts, which fires the existing AFTER
+   INSERT trigger -> send-admin-push -> APNs, and also calls notify-support for
+   the email + SMS. Escalation is driven by the page, never by the model, so a
+   prompt-injected "escalate" cannot page anyone.
    ========================================================================== */
 (function () {
-  var SUPABASE_URL = 'https://japlrtlpopefvgkecpif.supabase.co';
-  var SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImphcGxydGxwb3BlZnZna2VjcGlmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzE3Njc1NTcsImV4cCI6MjA4NzM0MzU1N30.q0JVwQJdJcpNUcyt2opxE-yRlhBnWdO3oq4IUMk6L5M';
-  var JOINED_KEY = 'sf_waitlist_joined';
+  var URL_BASE = 'https://japlrtlpopefvgkecpif.supabase.co';
+  var ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImphcGxydGxwb3BlZnZna2VjcGlmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzE3Njc1NTcsImV4cCI6MjA4NzM0MzU1N30.q0JVwQJdJcpNUcyt2opxE-yRlhBnWdO3oq4IUMk6L5M';
+  var H = { 'Content-Type': 'application/json', 'apikey': ANON, 'Authorization': 'Bearer ' + ANON };
 
-  function joined() { try { return localStorage.getItem(JOINED_KEY) === '1'; } catch (e) { return false; } }
-  function markJoined() { try { localStorage.setItem(JOINED_KEY, '1'); } catch (e) {} }
+  var log = document.getElementById('chatLog');
+  var panel = document.getElementById('chatPanel');
+  var history = [];
+  var greeted = false;
 
-  function thanks(form) {
-    var done = document.createElement('div');
-    done.className = 'wl-done';
-    done.innerHTML = '<b>You’re on the list.</b><p>We’ll email you the moment it’s live.</p>';
-    form.parentNode.replaceChild(done, form);
+  function add(text, cls) {
+    var d = document.createElement('div');
+    d.className = 'msg ' + cls;
+    d.textContent = text;
+    log.appendChild(d);
+    log.scrollTop = log.scrollHeight;
+    return d;
   }
 
-  async function submit(form, ev) {
+  window.openChat = function () {
+    panel.classList.add('open');
+    if (!greeted) {
+      greeted = true;
+      add('Hi — I can answer questions about SnapFix: what it covers, what it costs, how to get started. If you’d rather speak to a person, just type "live agent".', 'bot');
+    }
+    document.getElementById('chatText').focus();
+  };
+  window.closeChat = function () { panel.classList.remove('open'); };
+
+  // Escalation is a page-side decision on the visitor's own words.
+  var WANTS_HUMAN = /\b(live agent|real person|speak to (a )?(human|person|someone)|talk to (a )?(human|person|someone)|human (please|agent)|customer (service|support) rep)\b/i;
+
+  function showEscalation() {
+    document.getElementById('chatForm').style.display = 'none';
+    document.getElementById('escForm').style.display = 'grid';
+    document.getElementById('escForm').querySelector('input').focus();
+  }
+
+  window.sendChat = async function (ev) {
     ev.preventDefault();
-    var err = form.querySelector('[data-error]');
-    var btn = form.querySelector('button[type=submit]');
-    var email = (form.elements.email && form.elements.email.value || '').trim();
-    var name = (form.elements.name && form.elements.name.value || '').trim();
-    var role = (form.elements.role && form.elements.role.value) || 'homeowner';
+    var input = document.getElementById('chatText');
+    var btn = document.getElementById('chatSend');
+    var text = input.value.trim();
+    if (!text) return false;
 
-    if (err) err.textContent = '';
-    if (!email || email.indexOf('@') < 1) {
-      if (err) err.textContent = 'Please enter a valid email address.';
-      else form.elements.email.focus();
-      return;
+    add(text, 'user');
+    input.value = '';
+
+    if (WANTS_HUMAN.test(text)) {
+      add('Of course — let me put you through to someone.', 'bot');
+      showEscalation();
+      return false;
     }
-    // `name` is NOT NULL on the table; the hero form only asks for an email.
-    if (!name) name = email.split('@')[0];
 
-    if (btn) { btn.disabled = true; btn.dataset.label = btn.textContent; btn.textContent = 'Adding…'; }
-
+    btn.disabled = true;
+    var thinking = add('…', 'bot');
     try {
-      var res = await fetch(SUPABASE_URL + '/rest/v1/waitlist', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'apikey': SUPABASE_KEY,
-          'Authorization': 'Bearer ' + SUPABASE_KEY,
-          'Prefer': 'return=minimal'
-        },
-        body: JSON.stringify({ name: name, email: email, role: role })
+      var res = await fetch(URL_BASE + '/functions/v1/site-chat', {
+        method: 'POST', headers: H,
+        body: JSON.stringify({ message: text, history: history })
       });
-      if (!res.ok && res.status !== 409) throw new Error('HTTP ' + res.status);
-
-      // Launch email is best effort — a failure here must not tell someone
-      // their signup failed when the row was written.
-      fetch(SUPABASE_URL + '/functions/v1/send-waitlist-email', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'apikey': SUPABASE_KEY,
-          'Authorization': 'Bearer ' + SUPABASE_KEY
-        },
-        body: JSON.stringify({ name: name, email: email, role: role })
-      }).catch(function () {});
-
-      markJoined();
-      thanks(form);
-      var modal = document.getElementById('wl-modal');
-      if (modal && modal.classList.contains('open') && !modal.contains(form)) closeModal();
+      var data = await res.json();
+      var reply = data.reply || 'Sorry — try that again?';
+      thinking.textContent = reply;
+      history.push({ role: 'user', content: text });
+      history.push({ role: 'assistant', content: reply });
+      if (history.length > 8) history = history.slice(-8);
     } catch (e) {
-      if (btn) { btn.disabled = false; btn.textContent = btn.dataset.label || 'Join the waitlist'; }
-      if (err) err.textContent = 'Something went wrong. Please try again.';
+      thinking.textContent = 'I couldn’t reach the assistant. Type "live agent" and a person will pick this up.';
     }
-  }
-
-  Array.prototype.forEach.call(document.querySelectorAll('[data-waitlist]'), function (f) {
-    f.addEventListener('submit', function (ev) { submit(f, ev); });
-  });
-
-  /* ---- Timed modal: 3 minutes of *active* time on the page ---------------
-     Counted with a visibility-aware timer rather than a plain setTimeout, so a
-     tab left open in the background doesn't pop a dialog the moment it is
-     brought forward. Shown once per visitor, never to someone already signed
-     up, and never on top of a reduced-motion preference for animation only. */
-  var MODAL_DELAY_MS = 3 * 60 * 1000;
-  var SEEN_KEY = 'sf_modal_seen';
-  var modal = document.getElementById('wl-modal');
-  var lastFocus = null;
-  var elapsed = 0, tickStart = null, timer = null;
-
-  function seen() { try { return localStorage.getItem(SEEN_KEY) === '1'; } catch (e) { return false; } }
-  function markSeen() { try { localStorage.setItem(SEEN_KEY, '1'); } catch (e) {} }
-
-  window.closeModal = function () {
-    if (!modal) return;
-    modal.classList.remove('open');
-    setTimeout(function () { modal.hidden = true; }, 300);
-    document.removeEventListener('keydown', onKey);
-    if (lastFocus && lastFocus.focus) lastFocus.focus();
+    btn.disabled = false;
+    input.focus();
+    return false;
   };
 
-  function onKey(e) {
-    if (e.key === 'Escape') { closeModal(); return; }
-    if (e.key !== 'Tab') return;
-    var f = modal.querySelectorAll('button, input, select, a[href]');
-    if (!f.length) return;
-    var first = f[0], last = f[f.length - 1];
-    if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
-    else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
-  }
+  window.sendEscalation = async function (ev) {
+    ev.preventDefault();
+    var f = ev.target;
+    var err = document.getElementById('escErr');
+    var name = f.name.value.trim(), email = f.email.value.trim(), note = f.note.value.trim();
+    err.textContent = '';
+    if (!name || !email) { err.textContent = 'Name and email, please.'; return false; }
 
-  function openModal() {
-    if (!modal || seen() || joined()) return;
-    markSeen();
-    lastFocus = document.activeElement;
-    modal.hidden = false;
-    requestAnimationFrame(function () { modal.classList.add('open'); });
-    document.addEventListener('keydown', onKey);
-    var firstField = modal.querySelector('input');
-    if (firstField) firstField.focus();
-  }
+    var btn = f.querySelector('button');
+    btn.disabled = true; btn.textContent = 'Notifying…';
 
-  function stopTick() {
-    if (tickStart !== null) { elapsed += Date.now() - tickStart; tickStart = null; }
-    if (timer) { clearTimeout(timer); timer = null; }
-  }
-  function startTick() {
-    if (seen() || joined() || tickStart !== null) return;
-    tickStart = Date.now();
-    timer = setTimeout(function () { stopTick(); openModal(); }, Math.max(0, MODAL_DELAY_MS - elapsed));
-  }
+    var transcript = history.map(function (m) { return (m.role === 'user' ? 'Visitor: ' : 'Bot: ') + m.content; }).join('\n');
+    var message = (note || 'Asked for a live agent on the website.') + '\n\n--- chat so far ---\n' + (transcript || '(no prior messages)');
 
-  if (modal && !seen() && !joined()) {
-    modal.querySelector('.modal-x').addEventListener('click', closeModal);
-    modal.addEventListener('click', function (e) { if (e.target === modal) closeModal(); });
-    document.addEventListener('visibilitychange', function () {
-      if (document.hidden) stopTick(); else startTick();
-    });
-    if (!document.hidden) startTick();
-  }
-})();
-</script>
-
-<script>
-/* Motion layer — reveals on scroll, nav progress. Degrades to static without JS. */
-(function () {
-  var reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  var sel = '.hero .container > *, section > .container > *, .step, .card, .feature';
-  var els = Array.prototype.slice.call(document.querySelectorAll(sel));
-
-  var counts = [];
-  els.forEach(function (el) {
-    var p = el.parentNode, i = 0, hit = null;
-    for (i = 0; i < counts.length; i++) { if (counts[i][0] === p) { hit = counts[i]; break; } }
-    if (!hit) { hit = [p, 0]; counts.push(hit); }
-    el.style.setProperty('--mo-i', hit[1]++);
-  });
-
-  function showAll() { els.forEach(function (el) { el.classList.add('mo-in'); }); }
-
-  if (reduced || !('IntersectionObserver' in window)) {
-    showAll();
-  } else {
-    var io = new IntersectionObserver(function (entries) {
-      entries.forEach(function (e) {
-        if (!e.isIntersecting) return;
-        e.target.classList.add('mo-in');
-        io.unobserve(e.target);
+    try {
+      // Writing this row is what pages the phone: the AFTER INSERT trigger
+      // calls send-admin-push, which we verified end to end.
+      var res = await fetch(URL_BASE + '/rest/v1/support_contacts', {
+        method: 'POST',
+        headers: Object.assign({}, H, { 'Prefer': 'return=minimal' }),
+        body: JSON.stringify({ name: name, email: email, phone: '', message: message, source: 'website-chat', status: 'new' })
       });
-    }, { rootMargin: '0px 0px -10% 0px', threshold: 0.1 });
-    els.forEach(function (el) { io.observe(el); });
-    setTimeout(showAll, 5000);
-  }
+      if (!res.ok) throw new Error('HTTP ' + res.status);
 
-  var nav = document.querySelector('.nav');
-  var bar = document.createElement('div');
-  bar.className = 'mo-progress';
-  document.body.appendChild(bar);
+      // Email + SMS. Best effort — the push above has already gone out, so a
+      // failure here must not tell the visitor nobody was reached.
+      fetch(URL_BASE + '/functions/v1/notify-support', {
+        method: 'POST', headers: H,
+        body: JSON.stringify({ name: name, email: email, phone: '', message: message })
+      }).catch(function () {});
 
-  var ticking = false;
-  function onScroll() {
-    var y = window.scrollY || window.pageYOffset;
-    if (nav) nav.classList.toggle('mo-scrolled', y > 8);
-    var max = document.documentElement.scrollHeight - window.innerHeight;
-    bar.style.transform = 'scaleX(' + (max > 0 ? Math.min(y / max, 1) : 0) + ')';
-    ticking = false;
-  }
-  window.addEventListener('scroll', function () {
-    if (ticking) return;
-    ticking = true;
-    window.requestAnimationFrame(onScroll);
-  }, { passive: true });
-  onScroll();
+      f.style.display = 'none';
+      add('A SnapFix team member has been notified and will email you at ' + email + '. Usually same day.', 'note');
+      document.getElementById('chatForm').style.display = 'flex';
+    } catch (e) {
+      btn.disabled = false; btn.textContent = 'Notify a live agent';
+      err.textContent = 'Couldn’t reach us just then — please try again.';
+    }
+    return false;
+  };
 })();
 </script>
+
 </body>
 </html>
